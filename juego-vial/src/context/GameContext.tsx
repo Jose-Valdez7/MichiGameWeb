@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo, useState, useEffect, type ReactNode
 
 type Player = {
   name: string
+  customName: string | null
   character: string | null
   position: number
   points: number
@@ -15,9 +16,11 @@ type GameState = {
 
 type GameContextType = GameState & {
   selectCharacter: (playerIndex: 0 | 1, character: string) => void
+  setCustomName: (playerIndex: 0 | 1, customName: string) => void
   setTurn: (turn: 0 | 1) => void
   addPoint: (playerIndex: 0 | 1) => void
   reset: () => void
+  justReset: boolean
 }
 
 const GameContext = createContext<GameContextType | null>(null)
@@ -28,8 +31,8 @@ const STORAGE_KEY = 'juego-vial-state'
 // Estado inicial por defecto
 const defaultState: GameState = {
   players: [
-    { name: 'Jugador 1', character: null, position: 0, points: 0 },
-    { name: 'Jugador 2', character: null, position: 0, points: 0 },
+    { name: 'Jugador 1', customName: null, character: null, position: 0, points: 0 },
+    { name: 'Jugador 2', customName: null, character: null, position: 0, points: 0 },
   ],
   currentTurn: 0,
   winner: null,
@@ -50,9 +53,10 @@ const loadStateFromStorage = (): GameState => {
         (parsed.currentTurn === 0 || parsed.currentTurn === 1) &&
         (parsed.winner === null || parsed.winner === 0 || parsed.winner === 1) &&
         // Validar estructura de jugadores
-        parsed.players.every((player: any) => 
+        parsed.players.every((player: any) =>
           typeof player === 'object' &&
           typeof player.name === 'string' &&
+          (player.customName === null || typeof player.customName === 'string') &&
           (player.character === null || typeof player.character === 'string') &&
           typeof player.position === 'number' &&
           typeof player.points === 'number'
@@ -85,18 +89,35 @@ const saveStateToStorage = (state: GameState) => {
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<GameState>(loadStateFromStorage)
+  const [justReset, setJustReset] = useState(false)
 
   // Efecto para guardar automáticamente en localStorage cuando cambie el estado
   useEffect(() => {
     saveStateToStorage(state)
   }, [state])
 
+  // Resetear la bandera justReset después de un tiempo
+  useEffect(() => {
+    if (justReset) {
+      const timer = setTimeout(() => setJustReset(false), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [justReset])
+
   const api: GameContextType = useMemo(() => ({
     ...state,
+    justReset,
     selectCharacter: (playerIndex, character) => {
       setState((s) => {
         const players = [...s.players] as [Player, Player]
         players[playerIndex] = { ...players[playerIndex], character }
+        return { ...s, players }
+      })
+    },
+    setCustomName: (playerIndex, customName) => {
+      setState((s) => {
+        const players = [...s.players] as [Player, Player]
+        players[playerIndex] = { ...players[playerIndex], customName }
         return { ...s, players }
       })
     },
@@ -124,10 +145,13 @@ export function GameProvider({ children }: { children: ReactNode }) {
     },
     reset: () => {
       setState(defaultState)
+      setJustReset(true)
       // Limpiar localStorage cuando se resetea el juego
       localStorage.removeItem(STORAGE_KEY)
+      // También limpiar la decisión del modal
+      localStorage.removeItem('juego-vial-modal-decision')
     },
-  }), [state])
+  }), [state, justReset])
 
   return <GameContext.Provider value={api}>{children}</GameContext.Provider>
 }

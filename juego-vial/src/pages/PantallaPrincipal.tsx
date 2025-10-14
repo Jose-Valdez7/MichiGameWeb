@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useGame } from '../context/GameContext'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ModalPregunta from '../components/ModalPregunta'
 import ModalGanador from '../components/ModalGanador'
 
@@ -15,7 +16,8 @@ const imagenes = [
 ]
 
 export default function PantallaPrincipal() {
-  const { players, currentTurn, addPoint, setTurn } = useGame()
+  const { players, currentTurn, addPoint, setTurn, reset } = useGame()
+  const navigate = useNavigate()
   const [imagenesBloqueadas, setImagenesBloqueadas] = useState<Set<number>>(new Set())
   const [showQuestionModal, setShowQuestionModal] = useState(false)
   const [showWinnerModal, setShowWinnerModal] = useState(false)
@@ -86,11 +88,18 @@ export default function PantallaPrincipal() {
   }
 
   const resetGame = () => {
+    // Reiniciar el estado del juego
+    reset()
     setImagenesBloqueadas(new Set())
     setGameFinished(false)
     setShowWinnerModal(false)
-    // Reiniciar el juego completo
-    window.location.reload()
+    setSelectedImageId(null)
+    setShowQuestionModal(false)
+    
+    // Pequeño delay para asegurar que el reset se complete antes de navegar
+    setTimeout(() => {
+      navigate('/')
+    }, 100)
   }
 
   return (
@@ -175,7 +184,7 @@ export default function PantallaPrincipal() {
           onClick={resetGame}
           className="btn bg-gray-500 hover:bg-gray-600 text-white mt-4"
         >
-          🔄 Reiniciar Juego
+          🆕 Empezar Nuevo Juego
         </button>
       )}
 
@@ -193,7 +202,6 @@ export default function PantallaPrincipal() {
         onClose={handleWinnerModalClose}
         winner={players.find(player => player.points >= 3)}
         onContinue={handleWinnerModalClose}
-        onPlayAgain={resetGame}
       />
     </div>
   )
