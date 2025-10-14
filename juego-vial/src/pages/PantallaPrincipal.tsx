@@ -21,8 +21,25 @@ export default function PantallaPrincipal() {
   const [showWinnerModal, setShowWinnerModal] = useState(false)
   const [selectedImageId, setSelectedImageId] = useState<number | null>(null)
   const [gameFinished, setGameFinished] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   const currentPlayer = players[currentTurn]
+
+  // Inicializar el juego cuando se llega por primera vez desde FightIntro
+  useEffect(() => {
+    if (!isInitialized && players[0].character && players[1].character) {
+      // Resetear el estado del juego para empezar limpio
+      setGameFinished(false)
+      setImagenesBloqueadas(new Set())
+      setShowQuestionModal(false)
+      setShowWinnerModal(false)
+      setSelectedImageId(null)
+      setIsInitialized(true)
+      
+      // Asegurar que el turno esté en 0 (primer jugador)
+      setTurn(0)
+    }
+  }, [players, isInitialized, setTurn])
 
   // Verificar si hay un ganador
   useEffect(() => {
@@ -34,9 +51,17 @@ export default function PantallaPrincipal() {
   }, [players, gameFinished])
 
   const handleImageClick = (imageId: number) => {
-    // No permitir clic si la imagen está bloqueada o el juego terminó
-    if (imagenesBloqueadas.has(imageId) || gameFinished) return
+    // No permitir clic si la imagen está bloqueada, el juego terminó, o no está inicializado
+    if (imagenesBloqueadas.has(imageId) || gameFinished || !isInitialized) {
+      console.log('Click bloqueado:', { 
+        isBlocked: imagenesBloqueadas.has(imageId), 
+        gameFinished, 
+        isInitialized 
+      })
+      return
+    }
     
+    console.log('Click permitido en imagen:', imageId)
     setSelectedImageId(imageId)
     setShowQuestionModal(true)
   }
@@ -85,9 +110,17 @@ export default function PantallaPrincipal() {
           {/* Información del turno */}
           <div className="text-center">
             <p className="text-lg font-bold text-gray-800">
-              Turno de: <span className="text-accent">{currentPlayer.character}</span>
+              {isInitialized ? (
+                <>
+                  Turno de: <span className="text-accent">{currentPlayer.character}</span>
+                </>
+              ) : (
+                <span className="text-yellow-600">Inicializando juego...</span>
+              )}
             </p>
-            <p className="text-sm text-gray-600">Haz clic en una imagen para responder</p>
+            <p className="text-sm text-gray-600">
+              {isInitialized ? 'Haz clic en una imagen para responder' : 'Preparando tablero...'}
+            </p>
           </div>
           
           {/* Jugador 2 */}
@@ -103,7 +136,7 @@ export default function PantallaPrincipal() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl">
         {imagenes.map((imagen) => {
           const isBlocked = imagenesBloqueadas.has(imagen.id)
-          const isCurrentPlayerTurn = !gameFinished
+          const isCurrentPlayerTurn = !gameFinished && isInitialized
           
           return (
             <motion.button

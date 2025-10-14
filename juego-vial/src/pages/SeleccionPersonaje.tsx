@@ -96,8 +96,8 @@ export default function SeleccionPersonaje() {
       </div>
 
       {canContinue && (
-        <Link to="/ppt" className="btn btn-primary mt-2">
-          Continuar al Piedra, Papel, Tijera
+        <Link to="/fight-intro" className="btn btn-primary mt-2">
+          ¡Iniciar Enfrentamiento!
         </Link>
       )}
 

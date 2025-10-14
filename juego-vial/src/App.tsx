@@ -1,6 +1,6 @@
 import { Route, Routes, Link } from 'react-router-dom'
 import SeleccionPersonaje from './pages/SeleccionPersonaje'
-import PiedraPapelTijera from './pages/PiedraPapelTijera'
+import FightIntro from './pages/FightIntro'
 import PantallaPrincipal from './pages/PantallaPrincipal'
 import Preguntas from './pages/Preguntas'
 import Resultado from './pages/Resultado'
@@ -14,7 +14,7 @@ export default function App() {
       </nav>
       <Routes>
         <Route path="/" element={<SeleccionPersonaje />} />
-        <Route path="/ppt" element={<PiedraPapelTijera />} />
+        <Route path="/fight-intro" element={<FightIntro />} />
         <Route path="/tablero" element={<PantallaPrincipal />} />
         <Route path="/preguntas" element={<Preguntas />} />
         <Route path="/resultado" element={<Resultado />} />
