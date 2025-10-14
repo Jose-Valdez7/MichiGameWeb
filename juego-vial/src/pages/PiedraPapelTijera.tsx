@@ -111,13 +111,13 @@ export default function PiedraPapelTijera() {
             Jugar de nuevo
           </button>
           <Link to="/tablero" className="btn btn-primary">
-            Ir al tablero
+            Ir al juego
           </Link>
         </div>
       )}
 
       <p className="text-white/90 text-center">
-        Quien gane comienza primero en el tablero vial.
+        Quien gane comienza primero en el juego de educación vial.
       </p>
     </div>
   )

@@ -1,7 +1,7 @@
 import { Route, Routes, Link } from 'react-router-dom'
 import SeleccionPersonaje from './pages/SeleccionPersonaje'
 import PiedraPapelTijera from './pages/PiedraPapelTijera'
-import TableroVial from './pages/TableroVial'
+import PantallaPrincipal from './pages/PantallaPrincipal'
 import Preguntas from './pages/Preguntas'
 import Resultado from './pages/Resultado'
 import './index.css'
@@ -15,7 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<SeleccionPersonaje />} />
         <Route path="/ppt" element={<PiedraPapelTijera />} />
-        <Route path="/tablero" element={<TableroVial />} />
+        <Route path="/tablero" element={<PantallaPrincipal />} />
         <Route path="/preguntas" element={<Preguntas />} />
         <Route path="/resultado" element={<Resultado />} />
       </Routes>
