@@ -29,19 +29,28 @@ export default function PantallaPrincipal() {
 
   // Inicializar el juego cuando se llega por primera vez desde FightIntro
   useEffect(() => {
-    if (!isInitialized && players[0].character && players[1].character) {
-      // Resetear el estado del juego para empezar limpio
-      setGameFinished(false)
-      setImagenesBloqueadas(new Set())
-      setShowQuestionModal(false)
-      setShowWinnerModal(false)
-      setSelectedImageId(null)
-      setIsInitialized(true)
-      
-      // Asegurar que el turno esté en 0 (primer jugador)
-      setTurn(0)
+    // Inicializar si ambos jugadores tienen personajes seleccionados
+    if (players[0]?.character && players[1]?.character) {
+      if (!isInitialized) {
+        console.log('🎮 Inicializando juego - Turno actual:', currentTurn, 'Jugador:', players[currentTurn]?.customName || players[currentTurn]?.character)
+        
+        // Resetear el estado del juego para empezar limpio
+        setGameFinished(false)
+        setImagenesBloqueadas(new Set())
+        setShowQuestionModal(false)
+        setShowWinnerModal(false)
+        setSelectedImageId(null)
+        setIsInitialized(true)
+        // NO cambiar el turno aquí - respetar la selección del modal
+        // El turno ya fue establecido por setStartingPlayer en el modal
+      }
+    } else {
+      // Si no están listos los personajes, marcar como no inicializado
+      if (isInitialized) {
+        setIsInitialized(false)
+      }
     }
-  }, [players, isInitialized, setTurn])
+  }, [players, isInitialized, currentTurn])
 
   // Verificar si hay un ganador
   useEffect(() => {
@@ -55,15 +64,9 @@ export default function PantallaPrincipal() {
   const handleImageClick = (imageId: number) => {
     // No permitir clic si la imagen está bloqueada, el juego terminó, o no está inicializado
     if (imagenesBloqueadas.has(imageId) || gameFinished || !isInitialized) {
-      console.log('Click bloqueado:', { 
-        isBlocked: imagenesBloqueadas.has(imageId), 
-        gameFinished, 
-        isInitialized 
-      })
       return
     }
     
-    console.log('Click permitido en imagen:', imageId)
     setSelectedImageId(imageId)
     setShowQuestionModal(true)
   }
@@ -173,10 +176,25 @@ export default function PantallaPrincipal() {
               {isBlocked && (
                 <p className="text-sm text-gray-600">✓ Respondido correctamente</p>
               )}
+              {!isInitialized && !isBlocked && (
+                <p className="text-sm text-yellow-600">⏳ Inicializando...</p>
+              )}
             </motion.button>
           )
         })}
       </div>
+
+      {/* Mensaje de estado si no está inicializado */}
+      {!isInitialized && (
+        <div className="card p-6 bg-yellow-50 border-2 border-yellow-200">
+          <div className="flex items-center gap-3">
+            <div className="animate-spin w-6 h-6 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
+            <p className="text-yellow-800 font-medium">
+              Esperando que ambos jugadores seleccionen sus personajes...
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Botón de reinicio - solo cuando hay ganador */}
       {gameFinished && (

@@ -2,12 +2,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGame } from '../context/GameContext'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ModalInicioJuego from '../components/ModalInicioJuego'
 
 export default function FightIntro() {
-  const { players } = useGame()
+  const { players, setStartingPlayer } = useGame()
   const navigate = useNavigate()
   const [animationPhase, setAnimationPhase] = useState<'entering' | 'vs' | 'names' | 'exiting'>('entering')
   const [key, setKey] = useState(0) // Para forzar re-render completo
+  const [showStartModal, setShowStartModal] = useState(false)
 
   // Resetear animación cada vez que se monta el componente
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function FightIntro() {
     const timer1 = setTimeout(() => setAnimationPhase('vs'), 2000)     // VS aparece después de 2s
     const timer2 = setTimeout(() => setAnimationPhase('names'), 4500)  // Nombres después de 4.5s
     const timer3 = setTimeout(() => setAnimationPhase('exiting'), 7000) // Salida después de 7s
-    const timer4 = setTimeout(() => navigate('/tablero'), 8500)        // Navegación después de 8.5s
+    const timer4 = setTimeout(() => setShowStartModal(true), 8500)     // Modal después de 8.5s
 
     return () => {
       clearTimeout(timer1)
@@ -28,10 +30,20 @@ export default function FightIntro() {
       clearTimeout(timer3)
       clearTimeout(timer4)
     }
-  }, [navigate, key]) // Agregar key como dependencia
+  }, [key]) // Agregar key como dependencia
 
   const player1 = players[0]
   const player2 = players[1]
+
+  const handleStartPlayerSelection = (playerIndex: 0 | 1) => {
+    console.log('🎯 Jugador seleccionado para iniciar:', playerIndex, 'Nombre:', players[playerIndex]?.customName || players[playerIndex]?.character)
+    setStartingPlayer(playerIndex)
+    setShowStartModal(false)
+    // Pequeño delay para que se vea la transición
+    setTimeout(() => {
+      navigate('/tablero')
+    }, 300)
+  }
 
   return (
     <div key={key} className="fixed inset-0 bg-black overflow-hidden">
@@ -82,8 +94,8 @@ export default function FightIntro() {
           <motion.div
             className="w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-6xl mb-4 shadow-2xl"
             animate={{ 
-              scale: animationPhase === 'vs' ? [1, 1.2, 1] : 1,
-              rotate: animationPhase === 'vs' ? [0, 5, -5, 0] : 0
+              scale: animationPhase === 'vs' ? 1.1 : 1,
+              rotate: animationPhase === 'vs' ? 3 : 0
             }}
             transition={{ duration: 0.5 }}
           >
@@ -100,7 +112,7 @@ export default function FightIntro() {
             }}
             transition={{ delay: 0.2 }}
           >
-            {player1.character}
+            {player1.customName || player1.character}
           </motion.h2>
           
           {/* Etiqueta jugador */}
@@ -135,8 +147,8 @@ export default function FightIntro() {
           <motion.div
             className="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-6xl mb-4 shadow-2xl"
             animate={{ 
-              scale: animationPhase === 'vs' ? [1, 1.2, 1] : 1,
-              rotate: animationPhase === 'vs' ? [0, -5, 5, 0] : 0
+              scale: animationPhase === 'vs' ? 1.1 : 1,
+              rotate: animationPhase === 'vs' ? -3 : 0
             }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
@@ -153,7 +165,7 @@ export default function FightIntro() {
             }}
             transition={{ delay: 0.2 }}
           >
-            {player2.character}
+            {player2.customName || player2.character}
           </motion.h2>
           
           {/* Etiqueta jugador */}
@@ -173,8 +185,8 @@ export default function FightIntro() {
         className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         initial={{ scale: 0, rotate: -360, opacity: 0 }}
         animate={{ 
-          scale: animationPhase === 'vs' ? [0, 1.3, 1] : animationPhase === 'exiting' ? 0 : 1,
-          rotate: animationPhase === 'vs' ? [-360, 0] : 0,
+          scale: animationPhase === 'vs' ? 1 : animationPhase === 'exiting' ? 0 : 1,
+          rotate: animationPhase === 'vs' ? 0 : 0,
           opacity: animationPhase === 'exiting' ? 0 : 1
         }}
         transition={{ 
@@ -185,26 +197,26 @@ export default function FightIntro() {
           duration: 0.8
         }}
       >
-        <motion.div
-          className="relative"
-          animate={{ 
-            scale: animationPhase === 'vs' ? [1, 1.2, 1] : 1,
-            rotate: animationPhase === 'vs' ? [0, 5, -5, 0] : 0
-          }}
-          transition={{ 
-            duration: 0.6,
-            repeat: animationPhase === 'vs' ? 2 : 0,
-            repeatType: "reverse",
-            ease: "easeInOut"
-          }}
-        >
+          <motion.div
+            className="relative"
+            animate={{ 
+              scale: animationPhase === 'vs' ? 1.1 : 1,
+              rotate: animationPhase === 'vs' ? 2 : 0
+            }}
+            transition={{ 
+              duration: 0.6,
+              repeat: animationPhase === 'vs' ? 2 : 0,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          >
           {/* Efecto de resplandor MÁS GRANDE */}
           <motion.div
             className="absolute inset-0 bg-yellow-300 rounded-full blur-3xl"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ 
-              opacity: animationPhase === 'vs' ? [0, 1, 0.8, 0] : 0,
-              scale: animationPhase === 'vs' ? [0, 3, 2.5, 3] : 0
+              opacity: animationPhase === 'vs' ? 0.8 : 0,
+              scale: animationPhase === 'vs' ? 2.5 : 0
             }}
             transition={{ 
               duration: 1.5, 
@@ -218,8 +230,8 @@ export default function FightIntro() {
             className="absolute inset-0 bg-white rounded-full blur-2xl"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ 
-              opacity: animationPhase === 'vs' ? [0, 0.9, 0] : 0,
-              scale: animationPhase === 'vs' ? [0, 2, 2] : 0
+              opacity: animationPhase === 'vs' ? 0.9 : 0,
+              scale: animationPhase === 'vs' ? 2 : 0
             }}
             transition={{ 
               duration: 1, 
@@ -232,11 +244,7 @@ export default function FightIntro() {
           <div className="relative bg-gradient-to-br from-red-600 via-red-500 to-red-800 text-white font-black text-6xl md:text-7xl lg:text-8xl px-8 py-6 rounded-full shadow-2xl border-4 border-white">
             <motion.div
               animate={{ 
-                textShadow: animationPhase === 'vs' ? [
-                  "0 0 20px white",
-                  "0 0 40px yellow",
-                  "0 0 20px white"
-                ] : "0 0 10px white"
+                textShadow: animationPhase === 'vs' ? "0 0 30px yellow" : "0 0 10px white"
               }}
               transition={{ 
                 duration: 0.5,
@@ -266,7 +274,7 @@ export default function FightIntro() {
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ 
               pathLength: 1, 
-              opacity: animationPhase === 'vs' ? [0, 1, 0.8, 1] : 0 
+              opacity: animationPhase === 'vs' ? 1 : 0 
             }}
             transition={{ 
               pathLength: { duration: 1.5, delay: 2.5 },
@@ -287,7 +295,7 @@ export default function FightIntro() {
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ 
               pathLength: 1, 
-              opacity: animationPhase === 'vs' ? [0, 0.6, 0.4, 0.6] : 0 
+              opacity: animationPhase === 'vs' ? 0.6 : 0 
             }}
             transition={{ 
               pathLength: { duration: 1.8, delay: 2.7 },
@@ -312,9 +320,9 @@ export default function FightIntro() {
                 scale: 0
               }}
               animate={{ 
-                opacity: animationPhase === 'vs' ? [0, 1, 0] : 0,
-                scale: animationPhase === 'vs' ? [0, 1.5, 0] : 0,
-                cy: animationPhase === 'vs' ? [90 + (i % 2) * 20, 100 + (i % 2) * 10, 90 + (i % 2) * 20] : 90 + (i % 2) * 20
+                opacity: animationPhase === 'vs' ? 1 : 0,
+                scale: animationPhase === 'vs' ? 1.5 : 0,
+                cy: animationPhase === 'vs' ? 95 + (i % 2) * 15 : 90 + (i % 2) * 20
               }}
               transition={{ 
                 duration: 0.5,
@@ -388,6 +396,17 @@ export default function FightIntro() {
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
       </motion.div>
+
+      {/* Modal para seleccionar jugador inicial */}
+      <AnimatePresence>
+        {showStartModal && (
+          <ModalInicioJuego
+            isOpen={showStartModal}
+            onSelect={handleStartPlayerSelection}
+            players={players}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

@@ -18,6 +18,7 @@ type GameContextType = GameState & {
   selectCharacter: (playerIndex: 0 | 1, character: string) => void
   setCustomName: (playerIndex: 0 | 1, customName: string) => void
   setTurn: (turn: 0 | 1) => void
+  setStartingPlayer: (playerIndex: 0 | 1) => void
   addPoint: (playerIndex: 0 | 1) => void
   reset: () => void
   justReset: boolean
@@ -122,6 +123,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       })
     },
     setTurn: (turn) => setState((s) => ({ ...s, currentTurn: turn })),
+    setStartingPlayer: (playerIndex) => setState((s) => ({ ...s, currentTurn: playerIndex })),
     addPoint: (playerIndex) => {
       setState((s) => {
         const players = [...s.players] as [Player, Player]
