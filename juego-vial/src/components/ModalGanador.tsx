@@ -4,7 +4,7 @@ import Modal from './ui/Modal'
 interface ModalGanadorProps {
   isOpen: boolean
   onClose: () => void
-  winner: { name: string; character: string | null; position: number; points: number } | undefined
+  winner: { name: string; customName: string | null; character: string | null; position: number; points: number } | undefined
   onContinue: () => void
 }
 
@@ -47,7 +47,7 @@ export default function ModalGanador({ isOpen, onClose, onContinue, winner }: Mo
               👑
             </motion.div>
             <h2 className="text-3xl font-bold text-success">
-              ¡{winner.name} ha ganado!
+              ¡{winner.customName || winner.name} ha ganado!
             </h2>
           </div>
           

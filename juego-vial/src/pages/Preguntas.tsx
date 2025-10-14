@@ -64,7 +64,7 @@ export default function Preguntas() {
       
       <div className="card p-4 mb-4">
         <p className="text-lg font-bold text-center">
-          Turno de: <span className="text-primary">{currentPlayer.character}</span>
+          Turno de: <span className="text-primary">{currentPlayer.customName || currentPlayer.name}</span>
         </p>
         <div className="flex justify-center gap-4 mt-2">
           <p className="text-sm text-center text-gray-600">
@@ -108,8 +108,8 @@ export default function Preguntas() {
           </h2>
           <p className="text-lg mb-2">
             {isCorrect 
-              ? `${currentPlayer.character} obtiene 1 punto y avanza una casilla` 
-              : `${currentPlayer.character} no obtiene puntos`
+              ? `${currentPlayer.customName || currentPlayer.name} obtiene 1 punto y avanza una casilla` 
+              : `${currentPlayer.customName || currentPlayer.name} no obtiene puntos`
             }
           </p>
           <p className="text-sm text-gray-600">

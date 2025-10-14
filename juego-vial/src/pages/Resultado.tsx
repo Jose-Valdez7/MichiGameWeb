@@ -46,7 +46,7 @@ export default function Resultado() {
                 >
                   <div>
                     <p className="font-bold text-lg">{player.character}</p>
-                    <p className="text-sm text-gray-600">Jugador {index + 1}</p>
+                    <p className="text-sm text-gray-600">{player.customName || `Jugador ${index + 1}`}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-2xl font-bold">
@@ -100,7 +100,7 @@ export default function Resultado() {
                 >
                   <div>
                     <p className="font-bold text-lg">{player.character}</p>
-                    <p className="text-sm text-gray-600">Jugador {index + 1}</p>
+                    <p className="text-sm text-gray-600">{player.customName || `Jugador ${index + 1}`}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-2xl font-bold">🚗</p>

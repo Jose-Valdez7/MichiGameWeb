@@ -64,14 +64,14 @@ export default function PiedraPapelTijera() {
 
       <div className="card p-4 mb-4">
         <p className="text-lg font-bold text-center">
-          Turno de: <span className="text-primary">{players[currentPlayer].character}</span>
+          Turno de: <span className="text-primary">{players[currentPlayer].customName || players[currentPlayer].name}</span>
         </p>
         <div className="flex gap-4 mt-2">
           <div className={`p-2 rounded ${player1Choice ? 'bg-success text-white' : 'bg-gray-200'}`}>
-            {players[0].character}: {player1Choice ? opciones.find(o => o.id === player1Choice)?.icon : 'Esperando...'}
+            {players[0].customName || players[0].name}: {player1Choice ? opciones.find(o => o.id === player1Choice)?.icon : 'Esperando...'}
           </div>
           <div className={`p-2 rounded ${player2Choice ? 'bg-success text-white' : 'bg-gray-200'}`}>
-            {players[1].character}: {player2Choice ? opciones.find(o => o.id === player2Choice)?.icon : 'Esperando...'}
+            {players[1].customName || players[1].name}: {player2Choice ? opciones.find(o => o.id === player2Choice)?.icon : 'Esperando...'}
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@ export default function PiedraPapelTijera() {
           className="card p-6 text-center"
         >
           <h2 className="text-2xl font-bold text-success mb-2">
-            ¡{players[winner].character} gana!
+            ¡{players[winner].customName || players[winner].name} gana!
           </h2>
           <p className="text-lg">Comenzará primero en el tablero</p>
         </motion.div>

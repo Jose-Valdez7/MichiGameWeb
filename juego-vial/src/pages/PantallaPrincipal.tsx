@@ -87,14 +87,14 @@ export default function PantallaPrincipal() {
           {/* Jugador 1 */}
           <div className="text-center">
             <h3 className="text-xl font-bold text-primary mb-2">{players[0].character}</h3>
-            <p className="text-sm text-gray-600">Jugador 1</p>
+            <p className="text-sm text-gray-600">{players[0].customName || 'Jugador 1'}</p>
             <p className="text-lg font-bold text-accent">Puntos: {players[0].points}/3</p>
           </div>
           
           {/* Información del turno */}
           <div className="text-center">
             <p className="text-lg font-bold text-gray-800">
-              Turno de: <span className="text-accent">{currentPlayer.character}</span>
+              Turno de: <span className="text-accent">{currentPlayer.customName || `Jugador ${currentTurn + 1}`}</span>
             </p>
             <p className="text-sm text-gray-600">Haz clic en una imagen para responder</p>
           </div>
@@ -102,7 +102,7 @@ export default function PantallaPrincipal() {
           {/* Jugador 2 */}
           <div className="text-center">
             <h3 className="text-xl font-bold text-secondary mb-2">{players[1].character}</h3>
-            <p className="text-sm text-gray-600">Jugador 2</p>
+            <p className="text-sm text-gray-600">{players[1].customName || 'Jugador 2'}</p>
             <p className="text-lg font-bold text-accent">Puntos: {players[1].points}/3</p>
           </div>
         </div>

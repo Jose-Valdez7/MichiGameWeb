@@ -8,7 +8,7 @@ interface ModalPreguntaProps {
   onClose: () => void
   onAnswer: (isCorrect: boolean) => void
   imageId: number | null
-  currentPlayer: { name: string; character: string | null; position: number; points: number }
+  currentPlayer: { name: string; customName: string | null; character: string | null; position: number; points: number }
 }
 
 const imageNames: Record<number, string> = {
@@ -74,7 +74,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
         {/* Información del jugador */}
         <div className="bg-blue-50 p-4 rounded-lg">
           <p className="text-center font-medium">
-            Turno de: <span className="text-primary font-bold">{currentPlayer.character}</span>
+            Turno de: <span className="text-primary font-bold">{currentPlayer.customName || currentPlayer.name}</span>
           </p>
           <p className="text-center text-sm text-gray-600">
             Puntos actuales: {currentPlayer.points}/3
@@ -122,8 +122,8 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
               isCorrect ? 'text-green-600' : 'text-red-600'
             }`}>
               {isCorrect 
-                ? `${currentPlayer.character} obtiene 1 punto y la imagen se bloquea` 
-                : `${currentPlayer.character} no obtiene puntos`
+                ? `${currentPlayer.customName || currentPlayer.name} obtiene 1 punto y la imagen se bloquea` 
+                : `${currentPlayer.customName || currentPlayer.name} no obtiene puntos`
               }
             </p>
             <p className="text-sm text-gray-600 mt-2">
