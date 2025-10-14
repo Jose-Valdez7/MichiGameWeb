@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useGame } from '../context/GameContext'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import GameDetectedModal from '../components/GameDetectedModal'
+import ModalNombreJugador from '../components/ModalNombreJugador'
 
 const characters = [
   'Aventurero',
@@ -14,33 +15,67 @@ const characters = [
 ]
 
 export default function SeleccionPersonaje() {
-  const { players, selectCharacter, reset } = useGame()
+  const { players, selectCharacter, setCustomName, reset, justReset } = useGame()
   const [currentPlayer, setCurrentPlayer] = useState<0 | 1>(0)
   const [showGameDetectedModal, setShowGameDetectedModal] = useState(false)
-  const [hasShownModal, setHasShownModal] = useState(false)
+  const [showNameModal, setShowNameModal] = useState(false)
+  const [selectedCharacter, setSelectedCharacter] = useState<string>('')
+  
+  // Bandera persistente en localStorage
+  const MODAL_DECISION_KEY = 'juego-vial-modal-decision'
+  
+  // Ref para rastrear si ya verificamos el modal
+  const hasCheckedModal = useRef(false)
 
+  // Efecto para verificar el modal
   useEffect(() => {
-    // Solo verificar si no hemos mostrado el modal ya
-    if (!hasShownModal) {
-      const hasGame = Boolean(
-        players[0].character || 
-        players[1].character || 
-        players[0].position > 0 || 
-        players[1].position > 0 || 
-        players[0].points > 0 || 
-        players[1].points > 0
-      )
-      
-      // Mostrar modal si hay un juego existente
-      if (hasGame) {
-        setShowGameDetectedModal(true)
-        setHasShownModal(true)
-      }
+    // Si ya verificamos el modal, no hacer nada
+    if (hasCheckedModal.current) {
+      return
     }
-  }, [players, hasShownModal])
+    
+    // No mostrar modal si acabamos de hacer reset
+    if (justReset) {
+      hasCheckedModal.current = true
+      return
+    }
+    
+    // Verificar si ya decidimos empezar nuevo en localStorage
+    const modalDecision = localStorage.getItem(MODAL_DECISION_KEY)
+    if (modalDecision === 'start-new') {
+      hasCheckedModal.current = true
+      return // No mostrar modal si ya decidimos empezar nuevo
+    }
+    
+    // Verificar si hay datos guardados
+    const hasAnyData = Boolean(
+      players[0].character || 
+      players[1].character || 
+      players[0].position > 0 || 
+      players[1].position > 0 || 
+      players[0].points > 0 || 
+      players[1].points > 0
+    )
+    
+    // Mostrar modal si hay cualquier dato guardado
+    if (hasAnyData) {
+      setShowGameDetectedModal(true)
+    }
+    
+    // Marcar que ya verificamos el modal
+    hasCheckedModal.current = true
+  }, [players, justReset])
 
   const handleCharacterSelect = (character: string) => {
-    selectCharacter(currentPlayer, character)
+    // Guardar el personaje seleccionado y mostrar el modal de nombre
+    setSelectedCharacter(character)
+    setShowNameModal(true)
+  }
+
+  const handleNameConfirm = (nombre: string) => {
+    // Seleccionar el personaje y establecer el nombre personalizado
+    selectCharacter(currentPlayer, selectedCharacter)
+    setCustomName(currentPlayer, nombre)
     
     // Cambiar al siguiente jugador o continuar
     if (currentPlayer === 0) {
@@ -53,12 +88,13 @@ export default function SeleccionPersonaje() {
   const handleStartNewGame = () => {
     reset()
     setCurrentPlayer(0)
-    setHasShownModal(false) // Resetear para que no aparezca el modal otra vez
+    localStorage.setItem(MODAL_DECISION_KEY, 'start-new') // Guardar decisión en localStorage
+    hasCheckedModal.current = false // Resetear para que no verifique el modal otra vez
   }
 
   const handleCloseModal = () => {
     setShowGameDetectedModal(false)
-    setHasShownModal(true) // Marcar que ya se mostró el modal
+    localStorage.removeItem(MODAL_DECISION_KEY) // Limpiar la decisión
   }
 
   return (
@@ -67,14 +103,14 @@ export default function SeleccionPersonaje() {
       
       <div className="card p-4 mb-4">
         <p className="text-lg font-bold text-center">
-          Turno de: <span className="text-primary">Jugador {currentPlayer + 1}</span>
+          Turno de: <span className="text-primary">{players[currentPlayer].customName || `Jugador ${currentPlayer + 1}`}</span>
         </p>
         <div className="flex gap-4 mt-2">
           <div className={`p-2 rounded ${players[0].character ? 'bg-success text-white' : 'bg-gray-200'}`}>
-            Jugador 1: {players[0].character || 'Sin seleccionar'}
+            {players[0].customName || 'Jugador 1'}: {players[0].character || 'Sin seleccionar'}
           </div>
           <div className={`p-2 rounded ${players[1].character ? 'bg-success text-white' : 'bg-gray-200'}`}>
-            Jugador 2: {players[1].character || 'Sin seleccionar'}
+            {players[1].customName || 'Jugador 2'}: {players[1].character || 'Sin seleccionar'}
           </div>
         </div>
       </div>
@@ -106,6 +142,15 @@ export default function SeleccionPersonaje() {
         isOpen={showGameDetectedModal}
         onClose={handleCloseModal}
         onStartNew={handleStartNewGame}
+      />
+
+      {/* Modal para personalizar nombre */}
+      <ModalNombreJugador
+        isOpen={showNameModal}
+        onClose={() => setShowNameModal(false)}
+        onConfirm={handleNameConfirm}
+        playerNumber={currentPlayer + 1}
+        characterName={selectedCharacter}
       />
     </div>
   )
