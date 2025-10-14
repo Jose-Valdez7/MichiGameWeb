@@ -1,9 +1,10 @@
-import { createContext, useContext, useMemo, useState, ReactNode } from 'react'
+import { createContext, useContext, useMemo, useState, useEffect, type ReactNode } from 'react'
 
 type Player = {
   name: string
   character: string | null
   position: number
+  points: number
 }
 
 type GameState = {
@@ -15,21 +16,80 @@ type GameState = {
 type GameContextType = GameState & {
   selectCharacter: (playerIndex: 0 | 1, character: string) => void
   setTurn: (turn: 0 | 1) => void
-  advance: (playerIndex: 0 | 1) => void
+  addPoint: (playerIndex: 0 | 1) => void
   reset: () => void
 }
 
 const GameContext = createContext<GameContextType | null>(null)
 
+// Clave para localStorage
+const STORAGE_KEY = 'juego-vial-state'
+
+// Estado inicial por defecto
+const defaultState: GameState = {
+  players: [
+    { name: 'Jugador 1', character: null, position: 0, points: 0 },
+    { name: 'Jugador 2', character: null, position: 0, points: 0 },
+  ],
+  currentTurn: 0,
+  winner: null,
+}
+
+// Función para cargar estado desde localStorage
+const loadStateFromStorage = (): GameState => {
+  try {
+    const savedState = localStorage.getItem(STORAGE_KEY)
+    if (savedState) {
+      const parsed = JSON.parse(savedState)
+      // Validar que la estructura sea correcta
+      if (
+        parsed.players &&
+        Array.isArray(parsed.players) &&
+        parsed.players.length === 2 &&
+        typeof parsed.currentTurn === 'number' &&
+        (parsed.currentTurn === 0 || parsed.currentTurn === 1) &&
+        (parsed.winner === null || parsed.winner === 0 || parsed.winner === 1) &&
+        // Validar estructura de jugadores
+        parsed.players.every((player: any) => 
+          typeof player === 'object' &&
+          typeof player.name === 'string' &&
+          (player.character === null || typeof player.character === 'string') &&
+          typeof player.position === 'number' &&
+          typeof player.points === 'number'
+        )
+      ) {
+        // Si los puntos no existen en datos antiguos, inicializarlos
+        if (parsed.players.some((player: any) => typeof player.points === 'undefined')) {
+          parsed.players = parsed.players.map((player: any) => ({
+            ...player,
+            points: player.points || 0
+          }))
+        }
+        return parsed
+      }
+    }
+  } catch (error) {
+    console.error('Error al cargar estado desde localStorage:', error)
+  }
+  return defaultState
+}
+
+// Función para guardar estado en localStorage
+const saveStateToStorage = (state: GameState) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  } catch (error) {
+    console.error('Error al guardar estado en localStorage:', error)
+  }
+}
+
 export function GameProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<GameState>({
-    players: [
-      { name: 'Jugador 1', character: null, position: 0 },
-      { name: 'Jugador 2', character: null, position: 0 },
-    ],
-    currentTurn: 0,
-    winner: null,
-  })
+  const [state, setState] = useState<GameState>(loadStateFromStorage)
+
+  // Efecto para guardar automáticamente en localStorage cuando cambie el estado
+  useEffect(() => {
+    saveStateToStorage(state)
+  }, [state])
 
   const api: GameContextType = useMemo(() => ({
     ...state,
@@ -41,23 +101,32 @@ export function GameProvider({ children }: { children: ReactNode }) {
       })
     },
     setTurn: (turn) => setState((s) => ({ ...s, currentTurn: turn })),
-    advance: (playerIndex) => {
+    addPoint: (playerIndex) => {
       setState((s) => {
         const players = [...s.players] as [Player, Player]
-        const next = Math.min(players[playerIndex].position + 1, 3)
-        players[playerIndex] = { ...players[playerIndex], position: next }
-        const winner = next >= 3 ? playerIndex : null
+        const currentPlayer = players[playerIndex]
+        
+        // Agregar punto y actualizar posición
+        const newPoints = currentPlayer.points + 1
+        const newPosition = Math.min(newPoints, 3) // Máximo 3 posiciones (0, 1, 2, 3)
+        
+        players[playerIndex] = { 
+          ...currentPlayer, 
+          points: newPoints,
+          position: newPosition
+        }
+        
+        // Determinar ganador (3 puntos = posición 3 = meta)
+        const winner = newPoints >= 3 ? playerIndex : null
+        
         return { ...s, players, winner }
       })
     },
-    reset: () => setState({
-      players: [
-        { name: 'Jugador 1', character: null, position: 0 },
-        { name: 'Jugador 2', character: null, position: 0 },
-      ],
-      currentTurn: 0,
-      winner: null,
-    }),
+    reset: () => {
+      setState(defaultState)
+      // Limpiar localStorage cuando se resetea el juego
+      localStorage.removeItem(STORAGE_KEY)
+    },
   }), [state])
 
   return <GameContext.Provider value={api}>{children}</GameContext.Provider>
