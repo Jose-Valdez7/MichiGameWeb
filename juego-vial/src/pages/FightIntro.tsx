@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useGame } from '../context/GameContext'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -7,20 +7,16 @@ export default function FightIntro() {
   const { players } = useGame()
   const navigate = useNavigate()
   const [animationPhase, setAnimationPhase] = useState<'entering' | 'vs' | 'names' | 'exiting'>('entering')
-  const [key, setKey] = useState(0) // Para forzar re-render completo
 
-  // Resetear animación cada vez que se monta el componente
+  // Animación automática por fases - TIMING AJUSTADO
   useEffect(() => {
+    // Resetear a entering al montar
     setAnimationPhase('entering')
-    setKey(prev => prev + 1) // Forzar re-render completo
-  }, [])
-
-  // Animación automática por fases - TIMING MEJORADO
-  useEffect(() => {
-    const timer1 = setTimeout(() => setAnimationPhase('vs'), 2000)     // VS aparece después de 2s
-    const timer2 = setTimeout(() => setAnimationPhase('names'), 4500)  // Nombres después de 4.5s
-    const timer3 = setTimeout(() => setAnimationPhase('exiting'), 7000) // Salida después de 7s
-    const timer4 = setTimeout(() => navigate('/tablero'), 8500)        // Navegación después de 8.5s
+    
+    const timer1 = setTimeout(() => setAnimationPhase('vs'), 1000)     // VS aparece después de 1s
+    const timer2 = setTimeout(() => setAnimationPhase('names'), 3000)  // Nombres después de 3s
+    const timer3 = setTimeout(() => setAnimationPhase('exiting'), 5000) // Salida después de 5s
+    const timer4 = setTimeout(() => navigate('/tablero'), 6500)        // Navegación después de 6.5s
 
     return () => {
       clearTimeout(timer1)
@@ -28,13 +24,13 @@ export default function FightIntro() {
       clearTimeout(timer3)
       clearTimeout(timer4)
     }
-  }, [navigate, key]) // Agregar key como dependencia
+  }, [navigate]) // Solo navegación como dependencia
 
   const player1 = players[0]
   const player2 = players[1]
 
   return (
-    <div key={key} className="fixed inset-0 bg-black overflow-hidden">
+    <div className="fixed inset-0 bg-black overflow-hidden">
       {/* Fondo con gradiente dramático */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-900 via-purple-900 to-black" />
       
@@ -100,7 +96,7 @@ export default function FightIntro() {
             }}
             transition={{ delay: 0.2 }}
           >
-            {player1.character}
+            {player1.customName || player1.character}
           </motion.h2>
           
           {/* Etiqueta jugador */}
@@ -153,7 +149,7 @@ export default function FightIntro() {
             }}
             transition={{ delay: 0.2 }}
           >
-            {player2.character}
+            {player2.customName || player2.character}
           </motion.h2>
           
           {/* Etiqueta jugador */}
@@ -178,9 +174,8 @@ export default function FightIntro() {
           opacity: animationPhase === 'exiting' ? 0 : 1
         }}
         transition={{ 
-          type: "spring", 
-          stiffness: 300, 
-          damping: 20,
+          type: "tween", 
+          ease: "easeOut",
           delay: 1.2,
           duration: 0.8
         }}

@@ -29,19 +29,27 @@ export default function PantallaPrincipal() {
 
   // Inicializar el juego cuando se llega por primera vez desde FightIntro
   useEffect(() => {
-    if (!isInitialized && players[0].character && players[1].character) {
+    if (players[0].character && players[1].character && !isInitialized) {
+      console.log('Personajes detectados, inicializando...')
       // Resetear el estado del juego para empezar limpio
       setGameFinished(false)
       setImagenesBloqueadas(new Set())
       setShowQuestionModal(false)
       setShowWinnerModal(false)
       setSelectedImageId(null)
-      setIsInitialized(true)
       
       // Asegurar que el turno esté en 0 (primer jugador)
       setTurn(0)
+      
+      // Marcar como inicializado
+      setIsInitialized(true)
     }
-  }, [players, isInitialized, setTurn])
+  }, [players[0].character, players[1].character, isInitialized, setTurn])
+
+  // Resetear isInitialized cuando cambien los personajes
+  useEffect(() => {
+    setIsInitialized(false)
+  }, [players[0].character, players[1].character])
 
   // Verificar si hay un ganador
   useEffect(() => {
@@ -53,19 +61,34 @@ export default function PantallaPrincipal() {
   }, [players, gameFinished])
 
   const handleImageClick = (imageId: number) => {
-    // No permitir clic si la imagen está bloqueada, el juego terminó, o no está inicializado
-    if (imagenesBloqueadas.has(imageId) || gameFinished || !isInitialized) {
-      console.log('Click bloqueado:', { 
-        isBlocked: imagenesBloqueadas.has(imageId), 
-        gameFinished, 
-        isInitialized 
-      })
+    console.log('Click detectado en imagen:', imageId, {
+      isBlocked: imagenesBloqueadas.has(imageId),
+      gameFinished,
+      isInitialized,
+      player1: players[0].character,
+      player2: players[1].character
+    })
+
+    // Verificar condiciones básicas
+    if (imagenesBloqueadas.has(imageId)) {
+      console.log('Imagen ya bloqueada')
       return
     }
     
-    console.log('Click permitido en imagen:', imageId)
+    if (gameFinished) {
+      console.log('Juego terminado')
+      return
+    }
+    
+    if (!players[0].character || !players[1].character) {
+      console.log('Personajes no seleccionados')
+      return
+    }
+    
+    console.log('Click permitido - abriendo modal')
     setSelectedImageId(imageId)
     setShowQuestionModal(true)
+    console.log('Modal debería mostrarse ahora')
   }
 
   const handleQuestionAnswered = (isCorrect: boolean) => {
@@ -119,16 +142,16 @@ export default function PantallaPrincipal() {
           {/* Información del turno */}
           <div className="text-center">
             <p className="text-lg font-bold text-gray-800">
-              {isInitialized ? (
+              {players[0].character && players[1].character ? (
                 <>
                   Turno de: <span className="text-accent">{currentPlayer.character}</span>
                 </>
               ) : (
-                <span className="text-yellow-600">Inicializando juego...</span>
+                <span className="text-yellow-600">Esperando personajes...</span>
               )}
             </p>
             <p className="text-sm text-gray-600">
-              {isInitialized ? 'Haz clic en una imagen para responder' : 'Preparando tablero...'}
+              {players[0].character && players[1].character ? 'Haz clic en una imagen para responder' : 'Selecciona personajes primero'}
             </p>
           </div>
           
@@ -145,20 +168,20 @@ export default function PantallaPrincipal() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl">
         {imagenes.map((imagen) => {
           const isBlocked = imagenesBloqueadas.has(imagen.id)
-          const isCurrentPlayerTurn = !gameFinished && isInitialized
+          const canClick = !isBlocked && !gameFinished && players[0].character && players[1].character
           
           return (
             <motion.button
               key={imagen.id}
-              whileHover={!isBlocked && isCurrentPlayerTurn ? { scale: 1.05 } : {}}
-              whileTap={!isBlocked && isCurrentPlayerTurn ? { scale: 0.95 } : {}}
+              whileHover={canClick ? { scale: 1.05 } : {}}
+              whileTap={canClick ? { scale: 0.95 } : {}}
               onClick={() => handleImageClick(imagen.id)}
-              disabled={isBlocked || !isCurrentPlayerTurn}
+              disabled={!canClick}
               className={`
                 card p-8 flex flex-col items-center gap-4 text-center
                 ${isBlocked 
                   ? 'bg-gray-300 cursor-not-allowed opacity-50' 
-                  : isCurrentPlayerTurn 
+                  : canClick
                     ? 'hover:bg-primary/20 cursor-pointer transition-colors' 
                     : 'cursor-not-allowed opacity-75'
                 }
@@ -189,6 +212,7 @@ export default function PantallaPrincipal() {
       )}
 
       {/* Modales */}
+      {console.log('Estado del modal:', showQuestionModal, 'Imagen seleccionada:', selectedImageId)}
       <ModalPregunta
         isOpen={showQuestionModal}
         onClose={() => setShowQuestionModal(false)}
