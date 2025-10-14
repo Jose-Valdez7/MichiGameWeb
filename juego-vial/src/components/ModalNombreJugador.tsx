@@ -33,51 +33,74 @@ export default function ModalNombreJugador({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`Personalizar Jugador ${playerNumber}`}>
-      <div className="space-y-4">
-        <div className="text-center">
-          <p className="text-lg text-gray-700 mb-2">
-            Has seleccionado: <span className="font-bold text-primary">{characterName}</span>
-          </p>
-          <p className="text-sm text-gray-600">
-            ¿Cómo quieres que se llame este jugador?
-          </p>
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
-            Nombre del Jugador {playerNumber}:
-          </label>
-          <input
-            id="nombre"
-            type="text"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={`Nombre para Jugador ${playerNumber}`}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            autoFocus
-            maxLength={20}
+    <Modal isOpen={isOpen} onClose={onClose} title="">
+      <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden">
+        {/* Efectos de fondo épicos */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-pink-500/10" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500" />
+        
+        {/* Partículas flotantes */}
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-purple-400 rounded-full opacity-60"
+            style={{
+              left: `${Math.random() * 300}px`,
+              top: `${Math.random() * 200}px`,
+              animation: `float ${3 + Math.random() * 2}s infinite ease-in-out ${i * 0.3}s`
+            }}
           />
-          <p className="text-xs text-gray-500">
-            Máximo 20 caracteres
-          </p>
-        </div>
+        ))}
+        
+        <div className="space-y-6 relative z-10">
+          <div className="text-center">
+            <h2 className="text-3xl font-black text-white mb-4 drop-shadow-2xl">
+              🎭 <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">PERSONALIZAR JUGADOR</span>
+            </h2>
+            <p className="text-xl text-white mb-2 font-medium">
+              Has seleccionado: <span className="font-bold text-yellow-400">{characterName}</span>
+            </p>
+            <p className="text-lg text-gray-300">
+              ¿Cómo quieres que se llame este jugador?
+            </p>
+          </div>
 
-        <div className="flex gap-3 justify-center pt-4">
-          <button
-            onClick={onClose}
-            className="btn bg-gray-300 hover:bg-gray-400 text-gray-800"
-          >
-            Cancelar
-          </button>
-          <button
-            onClick={handleConfirm}
-            disabled={!nombre.trim()}
-            className="btn bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Continuar
-          </button>
+          <div className="space-y-4">
+            <label htmlFor="nombre" className="block text-lg font-bold text-white">
+              Nombre del Jugador {playerNumber}:
+            </label>
+            <input
+              id="nombre"
+              type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={`Nombre para Jugador ${playerNumber}`}
+              className="w-full px-6 py-4 bg-white/10 backdrop-blur-lg border-2 border-purple-400/50 rounded-xl text-white placeholder-gray-300 focus:ring-2 focus:ring-purple-400 focus:border-purple-300 transition-all duration-300 text-lg font-medium"
+              style={{ color: 'white' }}
+              autoFocus
+              maxLength={20}
+            />
+            <p className="text-sm text-gray-300 font-medium">
+              Máximo 20 caracteres
+            </p>
+          </div>
+
+          <div className="flex gap-4">
+            <button
+              onClick={onClose}
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-gray-500/20 to-gray-600/20 backdrop-blur-lg border-2 border-gray-400/50 text-white rounded-xl hover:border-gray-300 hover:shadow-lg hover:shadow-gray-500/25 transition-all duration-300 font-bold text-lg"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleConfirm}
+              disabled={!nombre.trim()}
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-500 hover:to-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-purple-500/50"
+            >
+              Continuar
+            </button>
+          </div>
         </div>
       </div>
     </Modal>

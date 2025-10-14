@@ -36,7 +36,6 @@ export default function FightIntro() {
   const player2 = players[1]
 
   const handleStartPlayerSelection = (playerIndex: 0 | 1) => {
-    console.log('🎯 Jugador seleccionado para iniciar:', playerIndex, 'Nombre:', players[playerIndex]?.customName || players[playerIndex]?.character)
     setStartingPlayer(playerIndex)
     setShowStartModal(false)
     // Pequeño delay para que se vea la transición

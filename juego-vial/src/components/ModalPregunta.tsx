@@ -67,71 +67,176 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={`Pregunta sobre ${imageNames[imageId]} - ${currentPlayer.character}`}
-      className="max-w-2xl"
+      title=""
+      className="max-w-4xl"
     >
-      <div className="space-y-6">
-        {/* Información del jugador */}
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <p className="text-center font-medium">
-            Turno de: <span className="text-primary font-bold">{currentPlayer.customName || currentPlayer.name}</span>
-          </p>
-          <p className="text-center text-sm text-gray-600">
-            Puntos actuales: {currentPlayer.points}/3
-          </p>
-        </div>
+      <motion.div
+        initial={{ scale: 0, opacity: 0, rotateY: -180 }}
+        animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+        exit={{ scale: 0, opacity: 0, rotateY: 180 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden"
+      >
+        {/* Efectos de fondo épicos */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-500/10" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500" />
+        
+        {/* Partículas flotantes */}
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-60"
+            initial={{ 
+              x: Math.random() * 400,
+              y: Math.random() * 300,
+              opacity: 0
+            }}
+            animate={{ 
+              opacity: [0, 0.8, 0],
+              scale: [0, 1, 0],
+              y: [Math.random() * 300, Math.random() * 300]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              delay: i * 0.3,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+        
+        <div className="space-y-6 relative z-10">
+        {/* Título épico */}
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h2 className="text-3xl font-black text-white mb-4 drop-shadow-2xl">
+            🎯 <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">PREGUNTA DE EDUCACIÓN VIAL</span>
+          </h2>
+        </motion.div>
 
-        {/* Pregunta */}
+        {/* Información del jugador - Estilo épico */}
+        <motion.div 
+          className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-lg border border-blue-400/50 rounded-2xl p-6"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="flex items-center justify-center gap-4 mb-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+              ⚡
+            </div>
+            <div>
+              <p className="text-xl font-black text-white">
+                TURNO DE: <span className="text-yellow-400">{currentPlayer.customName || currentPlayer.name}</span>
+              </p>
+              <p className="text-blue-300 font-medium">
+                Puntos actuales: <span className="text-yellow-400 font-bold">{currentPlayer.points}/3</span>
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Pregunta - Estilo épico */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-lg p-6 border-2 border-blue-200"
+          className="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-2xl p-8"
         >
-          <h3 className="text-xl font-bold text-gray-800 mb-4">{question.text}</h3>
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-black text-white mb-4 drop-shadow">
+              📚 Pregunta sobre: <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">{imageNames[imageId]}</span>
+            </h3>
+            <p className="text-xl text-gray-200 leading-relaxed">{question.text}</p>
+          </div>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
             {question.options.map((option, index) => (
               <motion.button
                 key={index}
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.1 * index }}
+                whileHover={selectedAnswer === null ? { scale: 1.02, y: -2 } : {}}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleAnswer(index)}
                 disabled={selectedAnswer !== null}
-                className={getAnswerButtonClass(index)}
+                className={`
+                  relative p-4 rounded-xl backdrop-blur-lg border-2 transition-all duration-300 text-left
+                  ${selectedAnswer === null 
+                    ? 'bg-gradient-to-r from-white/20 to-white/10 border-blue-400/50 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/25 text-white cursor-pointer' 
+                    : index === question?.answerIndex && isCorrect
+                      ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-400/50 text-green-300'
+                      : index === selectedAnswer
+                        ? 'bg-gradient-to-r from-red-500/20 to-pink-500/20 border-red-400/50 text-red-300'
+                        : 'bg-gray-500/30 border-gray-500/50 text-gray-400'
+                  }
+                `}
               >
-                {option}
+                <div className="flex items-center gap-3">
+                  <div className={`
+                    w-8 h-8 rounded-full flex items-center justify-center font-bold
+                    ${selectedAnswer === null 
+                      ? 'bg-blue-500/30 text-blue-300' 
+                      : index === question?.answerIndex && isCorrect
+                        ? 'bg-green-500/30 text-green-300'
+                        : index === selectedAnswer
+                          ? 'bg-red-500/30 text-red-300'
+                          : 'bg-gray-500/30 text-gray-400'
+                    }
+                  `}>
+                    {String.fromCharCode(65 + index)}
+                  </div>
+                  <span className="font-medium">{option}</span>
+                </div>
+                
+                {/* Efecto de resplandor para respuestas correctas */}
+                {index === question?.answerIndex && isCorrect && (
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-500/20 rounded-xl"
+                    animate={{ opacity: [0.3, 0.6, 0.3] }}
+                    transition={{ duration: 1, repeat: Infinity }}
+                  />
+                )}
               </motion.button>
             ))}
           </div>
         </motion.div>
 
-        {/* Resultado */}
+        {/* Resultado - Estilo épico */}
         {selectedAnswer !== null && (
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className={`p-6 rounded-lg text-center ${
-              isCorrect ? 'bg-green-100 border-2 border-green-300' : 'bg-red-100 border-2 border-red-300'
+            className={`p-6 rounded-2xl text-center backdrop-blur-lg border-2 ${
+              isCorrect 
+                ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-400/50' 
+                : 'bg-gradient-to-r from-red-500/20 to-pink-500/20 border-red-400/50'
             }`}
           >
-            <h3 className={`text-2xl font-bold mb-2 ${
-              isCorrect ? 'text-green-700' : 'text-red-700'
+            <h3 className={`text-3xl font-black mb-4 drop-shadow ${
+              isCorrect ? 'text-green-300' : 'text-red-300'
             }`}>
-              {isCorrect ? '¡Correcto! 🎉' : 'Incorrecto ❌'}
+              {isCorrect ? '🎉 ¡CORRECTO! 🎉' : '❌ INCORRECTO ❌'}
             </h3>
-            <p className={`text-lg ${
-              isCorrect ? 'text-green-600' : 'text-red-600'
+            <p className={`text-xl font-medium mb-3 ${
+              isCorrect ? 'text-green-300' : 'text-red-300'
             }`}>
               {isCorrect 
-                ? `${currentPlayer.customName || currentPlayer.name} obtiene 1 punto y la imagen se bloquea` 
-                : `${currentPlayer.customName || currentPlayer.name} no obtiene puntos`
+                ? `✅ ${currentPlayer.customName || currentPlayer.name} obtiene 1 punto y la imagen se bloquea` 
+                : `❌ ${currentPlayer.customName || currentPlayer.name} no obtiene puntos`
               }
             </p>
-            <p className="text-sm text-gray-600 mt-2">
-              El turno pasa al siguiente jugador...
+            <p className="text-gray-300 font-medium">
+              ⚡ El turno pasa al siguiente jugador...
             </p>
           </motion.div>
         )}
-      </div>
+        
+        </div>
+      </motion.div>
     </Modal>
   )
 }
