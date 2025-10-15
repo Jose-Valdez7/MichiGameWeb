@@ -114,8 +114,46 @@ export default function PantallaPrincipal() {
     }, 100)
   }
 
+  // Obtener imagen del personaje del jugador en turno
+  const getCharacterImage = (characterName: string | null) => {
+    if (!characterName) return null
+    const map: Record<string, string> = {
+      'Michi Gamer': '/images/personaje1.png',
+      'Michi Mago': '/images/personaje2.png',
+      'Michi Rapero': '/images/personaje3.png',
+      'Michi Hacker': '/images/personaje4.png',
+      'MIchi Vampiro': '/images/personaje5.png',
+      'Michi Cyborg': '/images/personaje6.png',
+    }
+    return map[characterName] || null
+  }
+
   return (
     <>
+      {/* Panel flotante con info del jugador (cuando hay pregunta abierta) */}
+      {showQuestionModal && (
+        <div className="fixed top-6 left-6 z-50">
+          <div className="relative">
+            {/* Glow decorativo */}
+            <div className="absolute -inset-2 rounded-3xl bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-2xl" />
+            <div className="relative flex items-center gap-4 bg-black/60 backdrop-blur-lg border-2 border-white/20 rounded-3xl px-4 py-3 md:px-5 md:py-4 shadow-2xl">
+              <div
+                className="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-white/40 shadow overflow-hidden bg-center bg-cover"
+                style={{ backgroundImage: getCharacterImage(currentPlayer.character) ? `url(${getCharacterImage(currentPlayer.character)})` : undefined }}
+              />
+              <div className="text-left leading-snug">
+                <p className="text-white font-black text-lg md:text-2xl drop-shadow">
+                  {currentPlayer.customName || currentPlayer.name}
+                </p>
+                <p className="text-blue-200 text-sm md:text-base">
+                  Puntos: <span className="font-extrabold text-yellow-300">{currentPlayer.points}/3</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Semáforo flotante - solo cuando el modal de preguntas está abierto */}
       {showQuestionModal && (
         <motion.div 
