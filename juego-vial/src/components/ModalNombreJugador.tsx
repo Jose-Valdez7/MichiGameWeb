@@ -34,7 +34,7 @@ export default function ModalNombreJugador({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="">
-      <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden">
+      <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-purple-400 hover:scrollbar-thumb-purple-300 scrollbar-thumb-rounded-full">
         {/* Efectos de fondo épicos */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-pink-500/10" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500" />

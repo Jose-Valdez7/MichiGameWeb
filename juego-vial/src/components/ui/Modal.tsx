@@ -28,7 +28,7 @@ export default function Modal({ isOpen, onClose, title, children, className = ''
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`max-w-4xl w-full max-h-[90vh] overflow-y-auto ${className}`}
+              className={`max-w-4xl w-full max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-purple-400 hover:scrollbar-thumb-purple-300 scrollbar-thumb-rounded-full ${className}`}
             >
               {children}
             </motion.div>

@@ -16,6 +16,74 @@ body {
   @apply m-0 bg-gradient-to-b from-sky-200 to-sky-400 text-slate-800;
 }
 
+/* Estilos personalizados para scrollbars épicos - Más visibles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: rgba(31, 41, 55, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scrollbar-thin::-webkit-scrollbar-corner {
+  background: rgba(31, 41, 55, 0.8);
+}
+
+/* Scrollbars más visibles y fáciles de usar */
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  min-height: 40px; /* Altura mínima para facilitar el click */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:active {
+  background-color: rgba(96, 165, 250, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Mejoras específicas para diferentes colores */
+.scrollbar-thumb-blue-400::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.8);
+  box-shadow: 0 2px 4px rgba(96, 165, 250, 0.3);
+}
+
+.scrollbar-thumb-blue-400::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.95);
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.5);
+}
+
+.scrollbar-thumb-purple-400::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.8);
+  box-shadow: 0 2px 4px rgba(168, 85, 247, 0.3);
+}
+
+.scrollbar-thumb-purple-400::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.95);
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.5);
+}
+
+.scrollbar-thumb-yellow-400::-webkit-scrollbar-thumb {
+  background: rgba(251, 191, 36, 0.8);
+  box-shadow: 0 2px 4px rgba(251, 191, 36, 0.3);
+}
+
+.scrollbar-thumb-yellow-400::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 191, 36, 0.95);
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.5);
+}
+
 .btn {
   @apply px-4 py-2 rounded-xl font-semibold shadow-md active:scale-95 transition disabled:opacity-50 disabled:pointer-events-none;
 }

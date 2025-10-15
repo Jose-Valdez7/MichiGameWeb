@@ -16,7 +16,7 @@ export default function GameDetectedModal({ isOpen, onClose, onStartNew }: GameD
       title=""
       className="max-w-lg"
     >
-      <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden">
+      <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-blue-400 hover:scrollbar-thumb-blue-300 scrollbar-thumb-rounded-full">
         {/* Efectos de fondo épicos */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-500/10" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500" />

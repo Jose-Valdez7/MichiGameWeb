@@ -24,7 +24,7 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
         animate={{ scale: 1, opacity: 1, rotateY: 0 }}
         exit={{ scale: 0, opacity: 0, rotateY: 180 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 max-w-3xl w-full mx-4 text-center shadow-2xl relative overflow-hidden"
+        className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 max-w-3xl w-full mx-4 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-yellow-400 hover:scrollbar-thumb-yellow-300 scrollbar-thumb-rounded-full"
       >
         {/* Efectos de fondo épicos */}
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-orange-500/10" />

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { pickRandomQuestions, type Question } from '../utils/questions'
+import { pickRandomQuestionsByCategory, getCategoryByImageId, type Question } from '../utils/questions'
 import Modal from './ui/Modal'
 
 interface ModalPreguntaProps {
@@ -20,6 +20,12 @@ const imageNames: Record<number, string> = {
   6: 'Estacionamiento',
 }
 
+const categoryNames: Record<string, string> = {
+  transito: 'Educación Vial',
+  movilis: 'Movilis',
+  riesgos: 'Riesgos Naturales'
+}
+
 export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, currentPlayer }: ModalPreguntaProps) {
   const [question, setQuestion] = useState<Question | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
@@ -27,8 +33,11 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
 
   useEffect(() => {
     if (isOpen && imageId) {
-      // Obtener una pregunta aleatoria
-      const questions = pickRandomQuestions(1)
+      // Obtener la categoría según el ID de imagen
+      const category = getCategoryByImageId(imageId)
+      
+      // Obtener una pregunta aleatoria de la categoría correspondiente
+      const questions = pickRandomQuestionsByCategory(category, 1)
       setQuestion(questions[0])
       setSelectedAnswer(null)
       setIsCorrect(null)
@@ -75,7 +84,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
         animate={{ scale: 1, opacity: 1, rotateY: 0 }}
         exit={{ scale: 0, opacity: 0, rotateY: 180 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden"
+        className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-blue-400 hover:scrollbar-thumb-blue-300 scrollbar-thumb-rounded-full"
       >
         {/* Efectos de fondo épicos */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-500/10" />
@@ -113,7 +122,9 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
           transition={{ delay: 0.2 }}
         >
           <h2 className="text-3xl font-black text-white mb-4 drop-shadow-2xl">
-            🎯 <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">PREGUNTA DE EDUCACIÓN VIAL</span>
+            🎯 <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+              {imageId ? categoryNames[getCategoryByImageId(imageId)] : 'PREGUNTA'}
+            </span>
           </h2>
         </motion.div>
 
@@ -147,8 +158,11 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
         >
           <div className="text-center mb-6">
             <h3 className="text-2xl font-black text-white mb-4 drop-shadow">
-              📚 Pregunta sobre: <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">{imageNames[imageId]}</span>
+              📚 Tema: <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">{imageNames[imageId]}</span>
             </h3>
+            <p className="text-lg text-gray-300 mb-4 font-medium">
+              Categoría: <span className="text-yellow-400 font-bold">{imageId ? categoryNames[getCategoryByImageId(imageId)] : 'General'}</span>
+            </p>
             <p className="text-xl text-gray-200 leading-relaxed">{question.text}</p>
           </div>
           
