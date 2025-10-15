@@ -11,6 +11,20 @@ export default function FightIntro() {
   const [key, setKey] = useState(0) // Para forzar re-render completo
   const [showStartModal, setShowStartModal] = useState(false)
 
+  // Obtener imagen del personaje seleccionado desde public/images
+  const getCharacterImage = (characterName: string | null) => {
+    if (!characterName) return null
+    const map: Record<string, string> = {
+      'Michi Gamer': '/images/personaje1.png',
+      'Michi Mago': '/images/personaje2.png',
+      'Michi Rapero': '/images/personaje3.png',
+      'Michi Hacker': '/images/personaje4.png',
+      'MIchi Vampiro': '/images/personaje5.png',
+      'Michi Cyborg': '/images/personaje6.png',
+    }
+    return map[characterName] || null
+  }
+
   // Resetear animación cada vez que se monta el componente
   useEffect(() => {
     setAnimationPhase('entering')
@@ -89,16 +103,21 @@ export default function FightIntro() {
         }}
       >
         <div className="text-center">
-          {/* Avatar del personaje */}
+          {/* Panel mitad izquierda con imagen a pantalla parcial */}
           <motion.div
-            className="w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-6xl mb-4 shadow-2xl"
-            animate={{ 
-              scale: animationPhase === 'vs' ? 1.1 : 1,
-              rotate: animationPhase === 'vs' ? 3 : 0
+            className="w-[42vw] max-w-[520px] h-[60vh] md:h-[65vh] rounded-2xl overflow-hidden "
+            style={{
+              backgroundImage: getCharacterImage(player1.character) ? `url(${getCharacterImage(player1.character)})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left'
             }}
-            transition={{ duration: 0.5 }}
+            animate={{ 
+              scale: animationPhase === 'vs' ? 1.03 : 1,
+              rotate: animationPhase === 'vs' ? 1.5 : 0
+            }}
+            transition={{ duration: 0.6 }}
           >
-            🚗
+            {/* <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" /> */}
           </motion.div>
           
           {/* Nombre del personaje */}
@@ -142,16 +161,21 @@ export default function FightIntro() {
         }}
       >
         <div className="text-center">
-          {/* Avatar del personaje */}
+          {/* Panel mitad derecha con imagen a pantalla parcial */}
           <motion.div
-            className="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-6xl mb-4 shadow-2xl"
-            animate={{ 
-              scale: animationPhase === 'vs' ? 1.1 : 1,
-              rotate: animationPhase === 'vs' ? -3 : 0
+            className="w-[42vw] max-w-[520px] h-[60vh] md:h-[65vh] rounded-2xl overflow-hidden "
+            style={{
+              backgroundImage: getCharacterImage(player2.character) ? `url(${getCharacterImage(player2.character)})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right'
             }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            animate={{ 
+              scale: animationPhase === 'vs' ? 1.03 : 1,
+              rotate: animationPhase === 'vs' ? -1.5 : 0
+            }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            🚙
+            <div className="absolute inset-0 bg-gradient-to-l from-black/40 via-transparent to-transparent" />
           </motion.div>
           
           {/* Nombre del personaje */}
@@ -367,7 +391,7 @@ export default function FightIntro() {
 
       {/* Título principal */}
       <motion.h1
-        className="absolute top-16 left-1/2 transform -translate-x-1/2 text-white font-black text-4xl md:text-6xl text-center"
+        className="absolute top-5 bottom-10 left-1/2 transform -translate-x-1/2 text-white font-black text-4xl md:text-6xl text-center"
         initial={{ y: -100, opacity: 0 }}
         animate={{ 
           y: 0, 
@@ -375,12 +399,12 @@ export default function FightIntro() {
         }}
         transition={{ type: "spring", stiffness: 100, damping: 15 }}
       >
-        ENFRENTAMIENTO FINAL
+        ENFRENTAMIENTO
       </motion.h1>
 
       {/* Mensaje de preparación */}
       <motion.div
-        className="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-center"
+        className="absolute bottom-16 top-20 left-1/2 transform -translate-x-1/2 text-center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ 
           opacity: animationPhase === 'names' ? 1 : 0,
