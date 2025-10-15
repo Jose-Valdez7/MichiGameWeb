@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom'
 import ModalPregunta from '../components/ModalPregunta'
 import ModalGanador from '../components/ModalGanador'
 
-// 6 imágenes diferentes para las preguntas
+// 6 imágenes diferentes para las preguntas con categorías
 const imagenes = [
-  { id: 1, icon: '🚦', name: 'Semáforos' },
-  { id: 2, icon: '🚸', name: 'Señales' },
-  { id: 3, icon: '🚗', name: 'Vehículos' },
-  { id: 4, icon: '🚶', name: 'Peatones' },
-  { id: 5, icon: '🛣️', name: 'Carreteras' },
-  { id: 6, icon: '🅿️', name: 'Estacionamiento' },
+  { id: 1, icon: '🚦', name: 'Semáforos', category: 'transito', categoryName: 'Educación Vial' },
+  { id: 2, icon: '🚸', name: 'Señales', category: 'movilis', categoryName: 'Movilis' },
+  { id: 3, icon: '🚗', name: 'Vehículos', category: 'transito', categoryName: 'Educación Vial' },
+  { id: 4, icon: '🚶', name: 'Peatones', category: 'transito', categoryName: 'Educación Vial' },
+  { id: 5, icon: '🛣️', name: 'Carreteras', category: 'riesgos', categoryName: 'Riesgos Naturales' },
+  { id: 6, icon: '🅿️', name: 'Estacionamiento', category: 'transito', categoryName: 'Educación Vial' },
 ]
 
 export default function PantallaPrincipal() {
@@ -223,12 +223,20 @@ export default function PantallaPrincipal() {
           </motion.div>
         </div>
       </motion.div>
-
       {/* Grid de imágenes - Estilo épico */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl">
         {imagenes.map((imagen, index) => {
           const isBlocked = imagenesBloqueadas.has(imagen.id)
           const isCurrentPlayerTurn = !gameFinished && isInitialized
+          
+          // Colores según categoría
+          const categoryColors = {
+            transito: { border: 'border-blue-400/50', hover: 'hover:border-blue-300', shadow: 'hover:shadow-blue-500/25' },
+            movilis: { border: 'border-purple-400/50', hover: 'hover:border-purple-300', shadow: 'hover:shadow-purple-500/25' },
+            riesgos: { border: 'border-red-400/50', hover: 'hover:border-red-300', shadow: 'hover:shadow-red-500/25' }
+          }
+          
+          const colors = categoryColors[imagen.category as keyof typeof categoryColors]
           
           return (
             <motion.button
@@ -250,7 +258,7 @@ export default function PantallaPrincipal() {
                 ${isBlocked 
                   ? 'bg-gray-500/30 border-gray-500/50 cursor-not-allowed opacity-60' 
                   : isCurrentPlayerTurn 
-                    ? 'bg-gradient-to-br from-white/20 to-white/10 border-yellow-400/50 hover:border-yellow-300 hover:shadow-2xl hover:shadow-yellow-500/25 cursor-pointer' 
+                    ? `bg-gradient-to-br from-white/20 to-white/10 ${colors.border} ${colors.hover} hover:shadow-2xl ${colors.shadow} cursor-pointer` 
                     : 'bg-white/10 border-white/30 cursor-not-allowed opacity-75'
                 }
               `}
@@ -278,6 +286,18 @@ export default function PantallaPrincipal() {
               <h3 className="text-xl font-black text-white drop-shadow relative z-10">
                 {isBlocked ? '✅ Completado' : imagen.name}
               </h3>
+              
+              {/* Indicador de categoría */}
+              {!isBlocked && (
+                <div className={`
+                  px-3 py-1 rounded-full text-xs font-bold relative z-10
+                  ${imagen.category === 'transito' ? 'bg-blue-500/20 text-blue-300 border border-blue-400/30' :
+                    imagen.category === 'movilis' ? 'bg-purple-500/20 text-purple-300 border border-purple-400/30' :
+                    'bg-red-500/20 text-red-300 border border-red-400/30'}
+                `}>
+                  {imagen.categoryName}
+                </div>
+              )}
               
               {isBlocked && (
                 <motion.p 

@@ -1,73 +1,196 @@
-# React + TypeScript + Vite
+# 🎮 Juego de Educación Vial
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Un juego educativo interactivo sobre educación vial desarrollado con React, TypeScript y Vite. Incluye animaciones épicas, efectos visuales impresionantes y un sistema de preguntas categorizadas.
 
-Currently, two official plugins are available:
+## ✨ Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🎯 **Sistema de Preguntas Categorizadas**: 3 categorías diferentes de preguntas
+  - **Educación Vial**: 50 preguntas sobre tránsito, semáforos, señales y reglas de tráfico
+  - **Movilis**: 3 preguntas sobre MOVILIS
+  - **Riesgos Naturales**: 3 preguntas sobre desastres naturales y conducción
+- 🎭 **Selección de Personajes**: Sistema personalizable de jugadores
+- ⚡ **Animaciones Épicas**: Efectos visuales con Framer Motion
+- 🎨 **Diseño Moderno**: Estilo épico con glassmorphism y gradientes
+- 🏆 **Sistema de Puntuación**: Competencia entre 2 jugadores
+- 📱 **Responsive**: Funciona perfectamente en móviles y desktop
+- 🎪 **Efectos Visuales**: Partículas flotantes, animaciones 3D y scrollbars personalizadas
 
-## React Compiler
+## 🚀 Instalación Rápida
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerrequisitos
 
-## Expanding the ESLint configuration
+Asegúrate de tener instalado en tu sistema:
+- **Node.js** (versión 16 o superior)
+- **npm** (viene incluido con Node.js)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Pasos de Instalación
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. **Clona o descarga el proyecto**
+   ```bash
+   git clone [URL_DEL_REPOSITORIO]
+   cd juego-vial
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+2. **Instala las dependencias**
+   ```bash
+   npm install
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3. **Inicia el servidor de desarrollo**
+   ```bash
+   npm run dev
+   ```
+
+4. **Abre tu navegador**
+   - Ve a `http://localhost:5173`
+   - ¡Disfruta del juego! 🎮
+
+## 🛠️ Scripts Disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Inicia el servidor de desarrollo |
+| `npm run build` | Construye el proyecto para producción |
+| `npm run preview` | Previsualiza la versión de producción |
+| `npm run lint` | Ejecuta el linter para revisar el código |
+
+## 🎯 Cómo Jugar
+
+1. **Selección de Personajes**: Elige personajes para cada jugador y personaliza sus nombres
+2. **Animación de Inicio**: Disfruta de la épica animación de presentación
+3. **Selección de Iniciador**: Elige qué jugador comienza el juego
+4. **Tablero de Juego**: Haz clic en las diferentes categorías de preguntas
+5. **Responder Preguntas**: Selecciona la respuesta correcta para ganar puntos
+6. **Victoria**: El primer jugador en llegar a 3 puntos gana
+
+## 🎨 Categorías de Preguntas
+
+### 📚 Educación Vial 
+### 🎪 Movilis
+### 🌋 Riesgos Naturales 
+
+## 🏗️ Tecnologías Utilizadas
+
+- **React 18**: Framework de JavaScript para interfaces de usuario
+- **TypeScript**: JavaScript con tipado estático
+- **Vite**: Herramienta de construcción rápida
+- **Tailwind CSS**: Framework de CSS utilitario
+- **Framer Motion**: Biblioteca de animaciones
+- **React Router**: Navegación entre páginas
+- **Local Storage**: Persistencia de datos del juego
+
+## 📁 Estructura del Proyecto
+
+```
+juego-vial/
+├── src/
+│   ├── components/          # Componentes reutilizables
+│   │   ├── ui/             # Componentes de interfaz base
+│   │   ├── ModalPregunta.tsx
+│   │   ├── ModalGanador.tsx
+│   │   └── ...
+│   ├── pages/              # Páginas principales
+│   │   ├── SeleccionPersonaje.tsx
+│   │   ├── FightIntro.tsx
+│   │   ├── PantallaPrincipal.tsx
+│   │   └── ...
+│   ├── context/            # Context API para estado global
+│   │   └── GameContext.tsx
+│   ├── utils/              # Utilidades y datos
+│   │   └── questions.ts    # Base de datos de preguntas
+│   └── index.css           # Estilos globales
+├── public/                 # Archivos estáticos
+├── tailwind.config.js      # Configuración de Tailwind
+└── package.json           # Dependencias del proyecto
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🎨 Características de Diseño
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Estilo Épico**: Gradientes dramáticos y efectos visuales
+- **Glassmorphism**: Efectos de cristal con blur y transparencias
+- **Partículas Flotantes**: Animaciones de ambiente dinámicas
+- **Scrollbars Personalizadas**: Barras de desplazamiento temáticas
+- **Animaciones 3D**: Rotaciones, escalas y efectos de profundidad
+- **Responsive Design**: Adaptable a todos los tamaños de pantalla
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🔧 Configuración Avanzada
+
+### Personalización de Preguntas
+
+Para agregar nuevas preguntas, edita el archivo `src/utils/questions.ts`:
+
+```typescript
+// Agregar pregunta de tránsito
+{
+  id: 57,
+  text: "¿Cuál es la velocidad máxima en zona escolar?",
+  options: ["30 km/h", "40 km/h", "50 km/h", "60 km/h"],
+  answerIndex: 0,
+  category: 'transito'
+}
 ```
+
+### Personalización de Colores
+
+Los colores se pueden modificar en `tailwind.config.js`:
+
+```javascript
+theme: {
+  extend: {
+    colors: {
+      primary: '#00bcd4',    // Color principal
+      secondary: '#ffd166',  // Color secundario
+      // ... más colores
+    }
+  }
+}
+```
+
+## 🐛 Solución de Problemas
+
+### Error: "Cannot find module"
+```bash
+# Elimina node_modules y reinstala
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Puerto 5173 ocupado
+```bash
+# Vite usará automáticamente el siguiente puerto disponible
+# O especifica un puerto diferente:
+npm run dev -- --port 3000
+```
+
+### Problemas con las animaciones
+- Asegúrate de que tu navegador soporte CSS moderno
+- Las animaciones se optimizan automáticamente en dispositivos con poca potencia
+
+## 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 👨‍💻 Desarrollado por
+
+[José Valdez, Antony y Jeremy Clearminds Consultores] - [joxzsian@gmail.com]
+
+## 🙏 Agradecimientos
+
+- **React Team** por el increíble framework
+- **Tailwind CSS** por el sistema de diseño utilitario
+- **Framer Motion** por las animaciones fluidas
+- **Vite** por la experiencia de desarrollo rápida
+
+---
+
+⭐ **¡Si te gusta este proyecto, dale una estrella!** ⭐
+
+🎮 **¡Disfruta jugando y aprendiendo sobre educación vial!** 🚗
