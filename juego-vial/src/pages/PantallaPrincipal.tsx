@@ -131,7 +131,7 @@ export default function PantallaPrincipal() {
       'Michi Mago': '/images/personaje2.png',
       'Michi Rapero': '/images/personaje3.png',
       'Michi Hacker': '/images/personaje4.png',
-      'MIchi Vampiro': '/images/personaje5.png',
+      'Michi Vampiro': '/images/personaje5.png',
       'Michi Cyborg': '/images/personaje6.png',
     }
     return map[characterName] || null
@@ -260,9 +260,19 @@ export default function PantallaPrincipal() {
             className="text-center relative"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-2xl mb-3 mx-auto shadow-lg">
-              🚗
-          </div>
+            <div className="w-25 h-25 rounded-full overflow-hidden border-4 border-blue-400 shadow-lg mb-3 mx-auto">
+              {getCharacterImage(players[0].character) ? (
+                <img 
+                  src={getCharacterImage(players[0].character) || ''} 
+                  alt={players[0].character || 'Jugador 1'}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-2xl">
+                  🚗
+                </div>
+              )}
+            </div>
             <h3 className="text-2xl font-black text-white mb-2 drop-shadow">{players[0].customName || 'Jugador 1'}</h3>
             <p className="text-sm text-blue-300 font-medium">{players[0].character}</p>
             <motion.div 
@@ -310,9 +320,19 @@ export default function PantallaPrincipal() {
             className="text-center relative"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-2xl mb-3 mx-auto shadow-lg">
-              🚙
-          </div>
+            <div className="w-25 h-25 rounded-full overflow-hidden border-4 border-orange-400 shadow-lg mb-3 mx-auto">
+              {getCharacterImage(players[1].character) ? (
+                <img 
+                  src={getCharacterImage(players[1].character) || ''} 
+                  alt={players[1].character || 'Jugador 2'}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-2xl">
+                  🚙
+                </div>
+              )}
+            </div>
             <h3 className="text-2xl font-black text-white mb-2 drop-shadow">{players[1].customName || 'Jugador 2'}</h3>
             <p className="text-sm text-orange-300 font-medium">{players[1].character}</p>
             <motion.div 
