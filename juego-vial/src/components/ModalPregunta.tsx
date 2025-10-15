@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { pickRandomQuestions, type Question } from '../utils/questions'
+import { pickRandomQuestionsByCategory, getCategoryByImageId, type Question } from '../utils/questions'
 import Modal from './ui/Modal'
 
 interface ModalPreguntaProps {
@@ -9,6 +9,7 @@ interface ModalPreguntaProps {
   onAnswer: (isCorrect: boolean) => void
   imageId: number | null
   currentPlayer: { name: string; customName: string | null; character: string | null; position: number; points: number }
+  onSemaphoreUpdate?: (selectedAnswer: number | null, isCorrect: boolean | null) => void
 }
 
 const imageNames: Record<number, string> = {
@@ -20,18 +21,29 @@ const imageNames: Record<number, string> = {
   6: 'Estacionamiento',
 }
 
-export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, currentPlayer }: ModalPreguntaProps) {
+const categoryNames: Record<string, string> = {
+  transito: 'Educación Vial',
+  movilis: 'Movilis',
+  riesgos: 'Riesgos Naturales'
+}
+
+export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, currentPlayer, onSemaphoreUpdate }: ModalPreguntaProps) {
   const [question, setQuestion] = useState<Question | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
+  const [showContinue, setShowContinue] = useState(false)
 
   useEffect(() => {
     if (isOpen && imageId) {
-      // Obtener una pregunta aleatoria
-      const questions = pickRandomQuestions(1)
+      // Obtener la categoría según el ID de imagen
+      const category = getCategoryByImageId(imageId)
+      
+      // Obtener una pregunta aleatoria de la categoría correspondiente
+      const questions = pickRandomQuestionsByCategory(category, 1)
       setQuestion(questions[0])
       setSelectedAnswer(null)
       setIsCorrect(null)
+      setShowContinue(false)
     }
   }, [isOpen, imageId])
 
@@ -42,10 +54,22 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
     const correct = answerIndex === question.answerIndex
     setIsCorrect(correct)
 
-    // Llamar a onAnswer después de un breve delay para mostrar el resultado
+    // Actualizar el semáforo
+    if (onSemaphoreUpdate) {
+      onSemaphoreUpdate(answerIndex, correct)
+    }
+
+    // Mostrar botón continuar después de un breve delay
     setTimeout(() => {
-      onAnswer(correct)
-    }, 2000)
+      setShowContinue(true)
+    }, 1500)
+  }
+
+  const handleContinue = () => {
+    if (isCorrect !== null) {
+      onAnswer(isCorrect)
+      onClose()
+    }
   }
 
   const getAnswerButtonClass = (index: number) => {
@@ -105,6 +129,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
           />
         ))}
         
+
         <div className="space-y-6 relative z-10">
         {/* Título épico */}
         <motion.div
@@ -113,7 +138,9 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
           transition={{ delay: 0.2 }}
         >
           <h2 className="text-3xl font-black text-white mb-4 drop-shadow-2xl">
-            🎯 <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">PREGUNTA DE EDUCACIÓN VIAL</span>
+            🎯 <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+              {imageId ? categoryNames[getCategoryByImageId(imageId)] : 'PREGUNTA'}
+            </span>
           </h2>
         </motion.div>
 
@@ -147,8 +174,11 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
         >
           <div className="text-center mb-6">
             <h3 className="text-2xl font-black text-white mb-4 drop-shadow">
-              📚 Pregunta sobre: <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">{imageNames[imageId]}</span>
+              📚 Tema: <span className="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">{imageNames[imageId]}</span>
             </h3>
+            <p className="text-lg text-gray-300 mb-4 font-medium">
+              Categoría: <span className="text-yellow-400 font-bold">{imageId ? categoryNames[getCategoryByImageId(imageId)] : 'General'}</span>
+            </p>
             <p className="text-xl text-gray-200 leading-relaxed">{question.text}</p>
           </div>
           
@@ -205,37 +235,30 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
           </div>
         </motion.div>
 
-        {/* Resultado - Estilo épico */}
-        {selectedAnswer !== null && (
+        {/* Botón Continuar */}
+        {showContinue && (
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className={`p-6 rounded-2xl text-center backdrop-blur-lg border-2 ${
-              isCorrect 
-                ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-400/50' 
-                : 'bg-gradient-to-r from-red-500/20 to-pink-500/20 border-red-400/50'
-            }`}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 200 }}
+            className="flex justify-center"
           >
-            <h3 className={`text-3xl font-black mb-4 drop-shadow ${
-              isCorrect ? 'text-green-300' : 'text-red-300'
-            }`}>
-              {isCorrect ? '🎉 ¡CORRECTO! 🎉' : '❌ INCORRECTO ❌'}
-            </h3>
-            <p className={`text-xl font-medium mb-3 ${
-              isCorrect ? 'text-green-300' : 'text-red-300'
-            }`}>
-              {isCorrect 
-                ? `✅ ${currentPlayer.customName || currentPlayer.name} obtiene 1 punto y la imagen se bloquea` 
-                : `❌ ${currentPlayer.customName || currentPlayer.name} no obtiene puntos`
-              }
-            </p>
-            <p className="text-gray-300 font-medium">
-              ⚡ El turno pasa al siguiente jugador...
-            </p>
+            <motion.button
+              onClick={handleContinue}
+              className={`px-8 py-4 rounded-2xl font-black text-xl shadow-2xl border-2 border-white/20 backdrop-blur-lg transition-all duration-300 ${
+                isCorrect
+                  ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white hover:shadow-green-500/50'
+                  : 'bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white hover:shadow-red-500/50'
+              }`}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {isCorrect ? '✅ CONTINUAR' : '❌ CONTINUAR'}
+            </motion.button>
           </motion.div>
         )}
         
-        </div>
+      </div>
       </motion.div>
     </Modal>
   )

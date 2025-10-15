@@ -7,6 +7,7 @@ type ModalNombreJugadorProps = {
   onConfirm: (nombre: string) => void
   playerNumber: number
   characterName: string
+  characterImage?: string
 }
 
 export default function ModalNombreJugador({ 
@@ -14,7 +15,8 @@ export default function ModalNombreJugador({
   onClose, 
   onConfirm, 
   playerNumber, 
-  characterName 
+  characterName,
+  characterImage 
 }: ModalNombreJugadorProps) {
   const [nombre, setNombre] = useState('')
 
@@ -34,7 +36,7 @@ export default function ModalNombreJugador({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="">
-      <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden">
+      <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-purple-400 hover:scrollbar-thumb-purple-300 scrollbar-thumb-rounded-full">
         {/* Efectos de fondo épicos */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-pink-500/10" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500" />
@@ -51,6 +53,17 @@ export default function ModalNombreJugador({
             }}
           />
         ))}
+        
+        {/* Imagen del personaje en la esquina superior derecha */}
+        {characterImage && (
+          <div className="absolute top-4 right-4 w-40 h-40 rounded-full overflow-hidden border-2 border-white/30 shadow-2xl z-20">
+            <img 
+              src={characterImage} 
+              alt={characterName}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
         
         <div className="space-y-6 relative z-10">
           <div className="text-center">
