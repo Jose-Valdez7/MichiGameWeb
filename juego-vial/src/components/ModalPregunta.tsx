@@ -51,7 +51,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
     if (isOpen && imageId) {
       // Obtener la categoría según el ID de imagen
       const category = getCategoryByImageId(imageId)
-      
+
       // Obtener una pregunta aleatoria de la categoría correspondiente
       const questions = pickRandomQuestionsByCategory(category, 1)
       setQuestion(questions[0])
@@ -63,7 +63,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
 
   const handleAnswer = (answerIndex: number) => {
     if (selectedAnswer !== null || !question) return
-    
+
     setSelectedAnswer(answerIndex)
     const correct = answerIndex === question.answerIndex
     setIsCorrect(correct)
@@ -88,14 +88,14 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
 
   const getAnswerButtonClass = (index: number) => {
     if (selectedAnswer === null) return "btn btn-secondary w-full justify-center"
-    
+
     // Solo mostrar la respuesta correcta si la respuesta del usuario fue correcta
     if (isCorrect && index === question?.answerIndex) {
       return "btn bg-success text-white w-full justify-center"
     } else if (index === selectedAnswer) {
       return "btn bg-accent text-white w-full justify-center"
     }
-    
+
     return "btn bg-gray-300 text-gray-600 w-full justify-center"
   }
 
@@ -122,16 +122,16 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
 
         
         {/* Partículas flotantes */}
-        {[...Array(12)].map((_, i) => (
+        {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-60"
-            initial={{ 
+            initial={{
               x: Math.random() * 400,
               y: Math.random() * 300,
               opacity: 0
             }}
-            animate={{ 
+            animate={{
               opacity: [0, 0.8, 0],
               scale: [0, 1, 0],
               y: [Math.random() * 300, Math.random() * 300]
@@ -144,7 +144,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
             }}
           />
         ))}
-        
+
 
         <div className="space-y-6 relative z-10">
 

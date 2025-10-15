@@ -10,7 +10,7 @@ const characters = [
   { name: 'Michi Mago', image: '/images/personaje2.png' },
   { name: 'Michi Rapero', image: '/images/personaje3.png' },
   { name: 'Michi Hacker', image: '/images/personaje4.png' },
-  { name: 'MIchi Vampiro', image: '/images/personaje5.png' },
+  { name: 'Michi Vampiro', image: '/images/personaje5.png' },
   { name: 'Michi Cyborg', image: '/images/personaje6.png' },
 ]
 

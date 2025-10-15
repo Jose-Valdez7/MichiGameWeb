@@ -1,19 +1,17 @@
 import { motion } from 'framer-motion'
 import Modal from './ui/Modal'
 
-const characters = [
-  { name: 'Gamer', image: '/images/personaje1.png' },
-  { name: 'Mage', image: '/images/personaje2.png' },
-  { name: 'MC', image: '/images/personaje3.png' },
-  { name: 'Hacker', image: '/images/personaje4.png' },
-  { name: 'Vampiro', image: '/images/personaje5.png' },
-  { name: 'Robot', image: '/images/personaje6.png' },
-]
-
-const getCharacterImage = (name: string | null | undefined) => {
-  if (!name) return null
-  const found = characters.find(c => c.name === name)
-  return found?.image || null
+const getCharacterImage = (characterName: string | null) => {
+  if (!characterName) return null
+  const map: Record<string, string> = {
+    'Michi Gamer': '/images/personaje1.png',
+    'Michi Mago': '/images/personaje2.png',
+    'Michi Rapero': '/images/personaje3.png',
+    'Michi Hacker': '/images/personaje4.png',
+    'MIchi Vampiro': '/images/personaje5.png',
+    'Michi Cyborg': '/images/personaje6.png',
+  }
+  return map[characterName] || null
 }
 
 interface ModalGanadorProps {
@@ -32,6 +30,7 @@ export default function ModalGanador({ isOpen, onClose, onContinue, winner }: Mo
       onClose={onClose}
       title=""
       className="max-w-lg"
+      adjustForNavbar={true}
     >
       <div className="bg-gradient-to-br from-gray-900 via-yellow-900 to-orange-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-yellow-400 hover:scrollbar-thumb-yellow-300 scrollbar-thumb-rounded-full">
         {/* Efectos de fondo épicos */}
