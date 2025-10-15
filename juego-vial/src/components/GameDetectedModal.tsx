@@ -15,6 +15,7 @@ export default function GameDetectedModal({ isOpen, onClose, onStartNew }: GameD
       onClose={onClose}
       title=""
       className="max-w-lg"
+      adjustForNavbar={true}
     >
       <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-blue-400 hover:scrollbar-thumb-blue-300 scrollbar-thumb-rounded-full">
         {/* Efectos de fondo épicos */}

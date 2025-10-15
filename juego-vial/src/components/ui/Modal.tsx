@@ -7,9 +7,10 @@ interface ModalProps {
   title: string
   children: ReactNode
   className?: string
+  adjustForNavbar?: boolean
 }
 
-export default function Modal({ isOpen, onClose, title, children, className = '' }: ModalProps) {
+export default function Modal({ isOpen, onClose, title, children, className = '', adjustForNavbar = false }: ModalProps) {
   // Bloquear scroll del body cuando el modal está abierto
   useEffect(() => {
     if (isOpen) {
@@ -34,7 +35,7 @@ export default function Modal({ isOpen, onClose, title, children, className = ''
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-gradient-to-br from-black/80 via-purple-900/50 to-black/80 backdrop-blur-lg z-50 flex items-center justify-center p-4"
+            className={`fixed inset-0 bg-gradient-to-br from-black/80 via-purple-900/50 to-black/80 backdrop-blur-lg z-50 flex items-center justify-center p-4 ${adjustForNavbar ? 'pt-50' : ''}`}
           >
             {/* Modal transparente - el contenido controla el estilo */}
             <motion.div

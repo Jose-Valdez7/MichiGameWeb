@@ -12,12 +12,12 @@ import riesgos from '../assets/Imagenes michivial/Gato_en construccion 1.png'
 import peatones from '../assets/Imagenes michivial/gatocruzando.png'
 
 const imagenes = [
-  { id: 1, icon: '🚦', name: 'Señales', imageSrc: senalPare },
-  { id: 2, icon: '🚸', name: 'Movilis', imageSrc: movilis },
-  { id: 3, icon: '🚗', name: 'Vehículos', imageSrc: gatoauto },
-  { id: 4, icon: '🚶', name: 'Peatones', imageSrc: peatones },
-  { id: 5, icon: '🛣️', name: 'Riesgos', imageSrc: riesgos },
-  { id: 6, icon: '🅿️', name: 'cliclistas', imageSrc: cliclistas },
+  { id: 1, icon: '🚦', name: 'Señales', imageSrc: senalPare, category: 'transito', categoryName: 'Educación Vial' },
+  { id: 2, icon: '🚸', name: 'Movilis', imageSrc: movilis, category: 'movilis', categoryName: 'Movilis' },
+  { id: 3, icon: '🚗', name: 'Vehículos', imageSrc: gatoauto, category: 'transito', categoryName: 'Educación Vial' },
+  { id: 4, icon: '🚶', name: 'Peatones', imageSrc: peatones, category: 'transito', categoryName: 'Educación Vial' },
+  { id: 5, icon: '🛣️', name: 'Riesgos', imageSrc: riesgos, category: 'riesgos', categoryName: 'Riesgos Naturales' },
+  { id: 6, icon: '🅿️', name: 'cliclistas', imageSrc: cliclistas, category: 'transito', categoryName: 'Educación Vial' },
 ]
 
 export default function PantallaPrincipal() {
