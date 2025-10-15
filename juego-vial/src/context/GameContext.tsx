@@ -117,7 +117,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     setCustomName: (playerIndex, customName) => {
       setState((s) => {
         const players = [...s.players] as [Player, Player]
-        players[playerIndex] = { ...players[playerIndex], customName }
+        players[playerIndex] = { ...players[playerIndex], customName, name: customName }
         return { ...s, players }
       })
     },

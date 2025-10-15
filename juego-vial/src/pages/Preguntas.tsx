@@ -64,7 +64,7 @@ export default function Preguntas() {
       
       <div className="card p-4 mb-4">
         <p className="text-lg font-bold text-center">
-          Turno de: <span className="text-primary">{currentPlayer.character}</span>
+          Turno de: <span className="text-primary">{currentPlayer.name}</span>
         </p>
         <div className="flex justify-center gap-4 mt-2">
           <p className="text-sm text-center text-gray-600">
@@ -82,6 +82,30 @@ export default function Preguntas() {
         className="card w-full max-w-2xl"
       >
         <p className="text-xl font-bold mb-6">{question.text}</p>
+        
+        {/* Mostrar imagen si existe */}
+        {question.image && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-6 flex justify-center"
+          >
+            <img 
+              src={question.image} 
+              alt="Imagen de la pregunta"
+              className="max-w-full h-auto max-h-64 rounded-lg shadow-lg border-2 border-gray-200"
+              onError={(e) => {
+                console.error('Error cargando imagen:', question.image)
+                e.currentTarget.style.display = 'none'
+              }}
+              onLoad={() => {
+                console.log('Imagen cargada exitosamente:', question.image)
+              }}
+            />
+          </motion.div>
+        )}
+        
         <div className="grid gap-3">
           {question.options.map((option, index) => (
             <motion.button 
@@ -108,8 +132,8 @@ export default function Preguntas() {
           </h2>
           <p className="text-lg mb-2">
             {isCorrect 
-              ? `${currentPlayer.character} obtiene 1 punto y avanza una casilla` 
-              : `${currentPlayer.character} no obtiene puntos`
+              ? `${currentPlayer.name} obtiene 1 punto y avanza una casilla` 
+              : `${currentPlayer.name} no obtiene puntos`
             }
           </p>
           <p className="text-sm text-gray-600">

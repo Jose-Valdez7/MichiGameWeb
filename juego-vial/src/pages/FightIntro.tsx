@@ -86,7 +86,7 @@ export default function FightIntro() {
             🚗
           </motion.div>
           
-          {/* Nombre del personaje */}
+          {/* Nombre del jugador */}
           <motion.h2
             className="text-3xl font-black text-white mb-2"
             initial={{ opacity: 0, y: 20 }}
@@ -99,14 +99,14 @@ export default function FightIntro() {
             {player1.customName || player1.character}
           </motion.h2>
           
-          {/* Etiqueta jugador */}
+          {/* Etiqueta del jugador */}
           <motion.p
             className="text-lg text-blue-300 font-bold"
             initial={{ opacity: 0 }}
             animate={{ opacity: animationPhase === 'names' ? 1 : 0 }}
             transition={{ delay: 0.4 }}
           >
-            JUGADOR 1
+            Jugador 1
           </motion.p>
         </div>
       </motion.div>
@@ -139,7 +139,7 @@ export default function FightIntro() {
             🚙
           </motion.div>
           
-          {/* Nombre del personaje */}
+          {/* Nombre del jugador */}
           <motion.h2
             className="text-3xl font-black text-white mb-2"
             initial={{ opacity: 0, y: 20 }}
@@ -152,14 +152,14 @@ export default function FightIntro() {
             {player2.customName || player2.character}
           </motion.h2>
           
-          {/* Etiqueta jugador */}
+          {/* Etiqueta del jugador */}
           <motion.p
             className="text-lg text-yellow-300 font-bold"
             initial={{ opacity: 0 }}
             animate={{ opacity: animationPhase === 'names' ? 1 : 0 }}
             transition={{ delay: 0.4 }}
           >
-            JUGADOR 2
+            Jugador 2
           </motion.p>
         </div>
       </motion.div>

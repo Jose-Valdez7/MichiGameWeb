@@ -20,7 +20,7 @@ export default function Modal({ isOpen, onClose, title, children, className = ''
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2"
           >
             {/* Modal */}
             <motion.div
@@ -28,7 +28,7 @@ export default function Modal({ isOpen, onClose, title, children, className = ''
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto ${className}`}
+              className={`bg-white rounded-2xl shadow-2xl w-full max-h-[90vh] overflow-y-auto ${className}`}
             >
               {/* Header */}
               <div className="p-6 border-b border-gray-200">

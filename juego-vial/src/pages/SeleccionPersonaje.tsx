@@ -98,7 +98,15 @@ export default function SeleccionPersonaje() {
   }
 
   return (
-    <div className="min-h-dvh p-6 flex flex-col items-center gap-6">
+    <div 
+      className="min-h-dvh p-6 flex flex-col items-center gap-6"
+      style={{
+        backgroundImage: 'url("/images/fondo-personajes.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow">Elige tus personajes</h1>
       
       <div className="card p-4 mb-4">

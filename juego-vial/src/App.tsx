@@ -9,9 +9,6 @@ import './index.css'
 export default function App() {
   return (
     <div className="min-h-dvh">
-      <nav className="w-full p-3 flex items-center justify-between">
-        <Link to="/" className="font-extrabold text-xl text-white drop-shadow">Juego Vial</Link>
-      </nav>
       <Routes>
         <Route path="/" element={<SeleccionPersonaje />} />
         <Route path="/fight-intro" element={<FightIntro />} />
