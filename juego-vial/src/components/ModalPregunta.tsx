@@ -95,18 +95,18 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
       className="max-w-4xl"
     >
       <motion.div
-        initial={{ scale: 0, opacity: 0, rotateY: -180 }}
-        animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-        exit={{ scale: 0, opacity: 0, rotateY: 180 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-blue-400 hover:scrollbar-thumb-blue-300 scrollbar-thumb-rounded-full"
+        initial={{ scale: 0.95, opacity: 0, y: 10 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 10 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
+        className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-6 text-center shadow-2xl relative overflow-hidden"
       >
         {/* Efectos de fondo épicos */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-500/10" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500" />
 
         {/* Partículas flotantes */}
-        {[...Array(12)].map((_, i) => (
+        {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-blue-400 rounded-full opacity-60"
