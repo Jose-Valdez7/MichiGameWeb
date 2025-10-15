@@ -6,12 +6,12 @@ import GameDetectedModal from '../components/GameDetectedModal'
 import ModalNombreJugador from '../components/ModalNombreJugador'
 
 const characters = [
-  { name: 'Gamer', image: '/images/personaje1.png' },
-  { name: 'Mage', image: '/images/personaje2.png' },
-  { name: 'MC', image: '/images/personaje3.png' },
-  { name: 'Hacker', image: '/images/personaje4.png' },
-  { name: 'Vampiro', image: '/images/personaje5.png' },
-  { name: 'Robot', image: '/images/personaje6.png' },
+  { name: 'Michi Gamer', image: '/images/personaje1.png' },
+  { name: 'Michi Mago', image: '/images/personaje2.png' },
+  { name: 'Michi Rapero', image: '/images/personaje3.png' },
+  { name: 'Michi Hacker', image: '/images/personaje4.png' },
+  { name: 'MIchi Vampiro', image: '/images/personaje5.png' },
+  { name: 'Michi Cyborg', image: '/images/personaje6.png' },
 ]
 
 export default function SeleccionPersonaje() {
