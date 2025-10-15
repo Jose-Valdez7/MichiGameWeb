@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom'
 import ModalPregunta from '../components/ModalPregunta'
 import ModalGanador from '../components/ModalGanador'
 
-// 6 imágenes diferentes para las preguntas
+// 6 imágenes diferentes para las preguntas con categorías
 const imagenes = [
-  { id: 1, icon: '🚦', name: 'Semáforos' },
-  { id: 2, icon: '🚸', name: 'Señales' },
-  { id: 3, icon: '🚗', name: 'Vehículos' },
-  { id: 4, icon: '🚶', name: 'Peatones' },
-  { id: 5, icon: '🛣️', name: 'Carreteras' },
-  { id: 6, icon: '🅿️', name: 'Estacionamiento' },
+  { id: 1, icon: '🚦', name: 'Semáforos', category: 'transito', categoryName: 'Educación Vial' },
+  { id: 2, icon: '🚸', name: 'Señales', category: 'movilis', categoryName: 'Movilis' },
+  { id: 3, icon: '🚗', name: 'Vehículos', category: 'transito', categoryName: 'Educación Vial' },
+  { id: 4, icon: '🚶', name: 'Peatones', category: 'transito', categoryName: 'Educación Vial' },
+  { id: 5, icon: '🛣️', name: 'Carreteras', category: 'riesgos', categoryName: 'Riesgos Naturales' },
+  { id: 6, icon: '🅿️', name: 'Estacionamiento', category: 'transito', categoryName: 'Educación Vial' },
 ]
 
 export default function PantallaPrincipal() {
@@ -32,8 +32,6 @@ export default function PantallaPrincipal() {
     // Inicializar si ambos jugadores tienen personajes seleccionados
     if (players[0]?.character && players[1]?.character) {
       if (!isInitialized) {
-        console.log('🎮 Inicializando juego - Turno actual:', currentTurn, 'Jugador:', players[currentTurn]?.customName || players[currentTurn]?.character)
-        
         // Resetear el estado del juego para empezar limpio
         setGameFinished(false)
         setImagenesBloqueadas(new Set())
@@ -106,104 +104,269 @@ export default function PantallaPrincipal() {
   }
 
   return (
-    <div className="min-h-dvh p-6 flex flex-col items-center gap-6">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-white drop-shadow">Juego de Educación Vial</h1>
+    <div className="min-h-dvh p-6 flex flex-col items-center gap-6 relative overflow-hidden">
+      {/* Fondo épico con gradiente dramático */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900" />
       
-      {/* Información de los jugadores */}
-      <div className="card p-6 w-full max-w-4xl">
-        <div className="flex justify-between items-center">
-          {/* Jugador 1 */}
-          <div className="text-center">
-            <h3 className="text-xl font-bold text-primary mb-2">{players[0].character}</h3>
-            <p className="text-sm text-gray-600">{players[0].customName || 'Jugador 1'}</p>
-            <p className="text-lg font-bold text-accent">Puntos: {players[0].points}/3</p>
-          </div>
-          
-          {/* Información del turno */}
-          <div className="text-center">
-            <p className="text-lg font-bold text-gray-800">
-              {isInitialized ? (
-                <>
-                  Turno de: <span className="text-accent">{currentPlayer.customName || `Jugador ${currentTurn + 1}`}</span>
-                </>
-              ) : (
-                <span className="text-yellow-600">Inicializando juego...</span>
-              )}
-            </p>
-            <p className="text-sm text-gray-600">
-              {isInitialized ? 'Haz clic en una imagen para responder' : 'Preparando tablero...'}
-            </p>
-          </div>
-          
-          {/* Jugador 2 */}
-          <div className="text-center">
-            <h3 className="text-xl font-bold text-secondary mb-2">{players[1].character}</h3>
-            <p className="text-sm text-gray-600">{players[1].customName || 'Jugador 2'}</p>
-            <p className="text-lg font-bold text-accent">Puntos: {players[1].points}/3</p>
-          </div>
-        </div>
+      {/* Efectos de partículas de fondo */}
+      <div className="absolute inset-0">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full opacity-30"
+            initial={{ 
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+              opacity: 0
+            }}
+            animate={{ 
+              opacity: [0, 0.6, 0],
+              scale: [0, 1, 0],
+              y: [Math.random() * window.innerHeight, Math.random() * window.innerHeight]
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              delay: i * 0.2,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
       </div>
 
-      {/* Grid de imágenes */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl">
-        {imagenes.map((imagen) => {
+      {/* Contenido principal */}
+      <div className="relative z-10 flex flex-col items-center gap-6 w-full">
+        <motion.h1 
+          className="text-4xl md:text-5xl font-black text-white drop-shadow-2xl text-center"
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
+        >
+          🎮 <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Juego de Educación Vial</span>
+        </motion.h1>
+      
+      {/* Información de los jugadores - Estilo épico */}
+      <motion.div 
+        className="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-2xl p-8 w-full max-w-5xl shadow-2xl"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
+      >
+        <div className="flex justify-between items-center">
+          {/* Jugador 1 */}
+          <motion.div 
+            className="text-center relative"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-2xl mb-3 mx-auto shadow-lg">
+              🚗
+            </div>
+            <h3 className="text-2xl font-black text-white mb-2 drop-shadow">{players[0].character}</h3>
+            <p className="text-sm text-blue-300 font-medium">{players[0].customName || 'Jugador 1'}</p>
+            <motion.div 
+              className="text-xl font-bold text-yellow-400 mt-2"
+              animate={{ scale: players[0].points > 0 ? [1, 1.1, 1] : 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              ⭐ {players[0].points}/3
+            </motion.div>
+          </motion.div>
+          
+          {/* Información del turno - CENTRO ÉPICO */}
+          <motion.div 
+            className="text-center relative"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+          >
+            <div className="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full p-6 mb-4 shadow-2xl">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-8 h-8 mx-auto"
+              >
+                ⚡
+              </motion.div>
+            </div>
+            <p className="text-xl font-black text-white mb-2 drop-shadow">
+              {isInitialized ? (
+                <>
+                  <span className="text-yellow-400">TURNO DE:</span><br/>
+                  <span className="text-orange-400">{currentPlayer.customName || `Jugador ${currentTurn + 1}`}</span>
+                </>
+              ) : (
+                <span className="text-yellow-400">⚡ INICIALIZANDO...</span>
+              )}
+            </p>
+            <p className="text-sm text-gray-300 font-medium">
+              {isInitialized ? '🎯 Haz clic en una imagen para responder' : '🔄 Preparando tablero...'}
+            </p>
+          </motion.div>
+          
+          {/* Jugador 2 */}
+          <motion.div 
+            className="text-center relative"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-2xl mb-3 mx-auto shadow-lg">
+              🚙
+            </div>
+            <h3 className="text-2xl font-black text-white mb-2 drop-shadow">{players[1].character}</h3>
+            <p className="text-sm text-orange-300 font-medium">{players[1].customName || 'Jugador 2'}</p>
+            <motion.div 
+              className="text-xl font-bold text-yellow-400 mt-2"
+              animate={{ scale: players[1].points > 0 ? [1, 1.1, 1] : 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              ⭐ {players[1].points}/3
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.div>
+      {/* Grid de imágenes - Estilo épico */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl">
+        {imagenes.map((imagen, index) => {
           const isBlocked = imagenesBloqueadas.has(imagen.id)
           const isCurrentPlayerTurn = !gameFinished && isInitialized
+          
+          // Colores según categoría
+          const categoryColors = {
+            transito: { border: 'border-blue-400/50', hover: 'hover:border-blue-300', shadow: 'hover:shadow-blue-500/25' },
+            movilis: { border: 'border-purple-400/50', hover: 'hover:border-purple-300', shadow: 'hover:shadow-purple-500/25' },
+            riesgos: { border: 'border-red-400/50', hover: 'hover:border-red-300', shadow: 'hover:shadow-red-500/25' }
+          }
+          
+          const colors = categoryColors[imagen.category as keyof typeof categoryColors]
           
           return (
             <motion.button
               key={imagen.id}
-              whileHover={!isBlocked && isCurrentPlayerTurn ? { scale: 1.05 } : {}}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1 * index, type: "spring", stiffness: 100 }}
+              whileHover={!isBlocked && isCurrentPlayerTurn ? { 
+                scale: 1.1, 
+                y: -10,
+                rotateY: 10
+              } : {}}
               whileTap={!isBlocked && isCurrentPlayerTurn ? { scale: 0.95 } : {}}
               onClick={() => handleImageClick(imagen.id)}
               disabled={isBlocked || !isCurrentPlayerTurn}
               className={`
-                card p-8 flex flex-col items-center gap-4 text-center
+                relative p-8 flex flex-col items-center gap-4 text-center rounded-2xl
+                backdrop-blur-lg border-2 transition-all duration-300
                 ${isBlocked 
-                  ? 'bg-gray-300 cursor-not-allowed opacity-50' 
+                  ? 'bg-gray-500/30 border-gray-500/50 cursor-not-allowed opacity-60' 
                   : isCurrentPlayerTurn 
-                    ? 'hover:bg-primary/20 cursor-pointer transition-colors' 
-                    : 'cursor-not-allowed opacity-75'
+                    ? `bg-gradient-to-br from-white/20 to-white/10 ${colors.border} ${colors.hover} hover:shadow-2xl ${colors.shadow} cursor-pointer` 
+                    : 'bg-white/10 border-white/30 cursor-not-allowed opacity-75'
                 }
               `}
             >
-              <div className="text-6xl">
-                {isBlocked ? '🔒' : imagen.icon}
-              </div>
-              <h3 className="text-lg font-bold">
-                {isBlocked ? 'Completado' : imagen.name}
-              </h3>
-              {isBlocked && (
-                <p className="text-sm text-gray-600">✓ Respondido correctamente</p>
+              {/* Efecto de resplandor para el turno activo */}
+              {!isBlocked && isCurrentPlayerTurn && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-2xl"
+                  animate={{ opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
               )}
+              
+              <motion.div 
+                className="text-6xl relative z-10"
+                animate={!isBlocked && isCurrentPlayerTurn ? { 
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 5, -5, 0]
+                } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                {isBlocked ? '🔒' : imagen.icon}
+              </motion.div>
+              
+              <h3 className="text-xl font-black text-white drop-shadow relative z-10">
+                {isBlocked ? '✅ Completado' : imagen.name}
+              </h3>
+              
+              {/* Indicador de categoría */}
+              {!isBlocked && (
+                <div className={`
+                  px-3 py-1 rounded-full text-xs font-bold relative z-10
+                  ${imagen.category === 'transito' ? 'bg-blue-500/20 text-blue-300 border border-blue-400/30' :
+                    imagen.category === 'movilis' ? 'bg-purple-500/20 text-purple-300 border border-purple-400/30' :
+                    'bg-red-500/20 text-red-300 border border-red-400/30'}
+                `}>
+                  {imagen.categoryName}
+                </div>
+              )}
+              
+              {isBlocked && (
+                <motion.p 
+                  className="text-sm text-green-300 font-medium relative z-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  🎯 Respondido correctamente
+                </motion.p>
+              )}
+              
               {!isInitialized && !isBlocked && (
-                <p className="text-sm text-yellow-600">⏳ Inicializando...</p>
+                <motion.p 
+                  className="text-sm text-yellow-400 font-medium relative z-10"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  ⚡ Inicializando...
+                </motion.p>
+              )}
+              
+              {!isBlocked && isCurrentPlayerTurn && (
+                <motion.div
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center"
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                >
+                  ⚡
+                </motion.div>
               )}
             </motion.button>
           )
         })}
       </div>
 
-      {/* Mensaje de estado si no está inicializado */}
+      {/* Mensaje de estado si no está inicializado - Estilo épico */}
       {!isInitialized && (
-        <div className="card p-6 bg-yellow-50 border-2 border-yellow-200">
-          <div className="flex items-center gap-3">
-            <div className="animate-spin w-6 h-6 border-4 border-yellow-500 border-t-transparent rounded-full"></div>
-            <p className="text-yellow-800 font-medium">
-              Esperando que ambos jugadores seleccionen sus personajes...
+        <motion.div 
+          className="bg-gradient-to-r from-yellow-400/20 to-orange-500/20 backdrop-blur-lg border border-yellow-400/50 rounded-2xl p-6 shadow-2xl"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 100 }}
+        >
+          <div className="flex items-center justify-center gap-4">
+            <motion.div 
+              className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
+            <p className="text-yellow-300 font-bold text-lg">
+              ⚡ Esperando que ambos jugadores seleccionen sus personajes...
             </p>
           </div>
-        </div>
+        </motion.div>
       )}
 
-      {/* Botón de reinicio - solo cuando hay ganador */}
+      {/* Botón de reinicio - solo cuando hay ganador - Estilo épico */}
       {gameFinished && (
-        <button 
+        <motion.button 
           onClick={resetGame}
-          className="btn bg-gray-500 hover:bg-gray-600 text-white mt-4"
+          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black text-xl px-8 py-4 rounded-2xl shadow-2xl border-2 border-white/20 backdrop-blur-lg transition-all duration-300 hover:scale-105 hover:shadow-purple-500/50"
+          whileHover={{ scale: 1.05, y: -5 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 100 }}
         >
           🆕 Empezar Nuevo Juego
-        </button>
+        </motion.button>
       )}
 
       {/* Modales */}
@@ -221,6 +384,7 @@ export default function PantallaPrincipal() {
         winner={players.find(player => player.points >= 3)}
         onContinue={handleWinnerModalClose}
       />
+      </div>
     </div>
   )
 }

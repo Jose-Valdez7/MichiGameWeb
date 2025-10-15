@@ -4,6 +4,13 @@ export type Question = {
   options: string[]
   answerIndex: number
   image?: string  // Ruta de la imagen (opcional)
+  category?: 'transito' | 'movilis' | 'riesgos'  // Nueva categoría
+}
+
+export type QuestionCategory = {
+  name: string
+  description: string
+  questions: Question[]
 }
 
 // Preguntas de educación vial
@@ -317,7 +324,106 @@ export const QUESTIONS: Question[] = [
   }
 ]
 
+// Preguntas de Movilis (3 preguntas)
+export const MOVILIS_QUESTIONS: Question[] = [
+  {
+    id: 1001,
+    text: "¿Qué es un movilis en el contexto de seguridad vial?",
+    options: [
+      "Un vehículo de emergencia",
+      "Un elemento móvil que puede causar accidentes",
+      "Un tipo de señal de tráfico",
+      "Un sistema de frenos automáticos"
+    ],
+    answerIndex: 1,
+    category: 'movilis'
+  },
+  {
+    id: 1002,
+    text: "¿Cuál es el principal riesgo de los movilis en la carretera?",
+    options: [
+      "Reducen la velocidad del tráfico",
+      "Pueden aparecer inesperadamente y causar colisiones",
+      "Consumen más combustible",
+      "Generan más ruido"
+    ],
+    answerIndex: 1,
+    category: 'movilis'
+  },
+  {
+    id: 1003,
+    text: "¿Cómo debe actuar un conductor al detectar un movilis?",
+    options: [
+      "Acelerar para pasar rápidamente",
+      "Reducir velocidad y estar preparado para maniobrar",
+      "Mantener la velocidad constante",
+      "Cambiar de carril inmediatamente"
+    ],
+    answerIndex: 1,
+    category: 'movilis'
+  }
+]
 
+// Preguntas de Riesgos Naturales (3 preguntas)
+export const RIESGOS_QUESTIONS: Question[] = [
+  {
+    id: 2001,
+    text: "¿Qué debe hacer un conductor si está cerca de un volcán en erupción?",
+    options: [
+      "Continuar conduciendo normalmente",
+      "Evacuar el área inmediatamente y buscar refugio",
+      "Estacionarse y observar el fenómeno",
+      "Acelerar para alejarse rápidamente"
+    ],
+    answerIndex: 1,
+    category: 'riesgos'
+  },
+  {
+    id: 2002,
+    text: "¿Cuál es la principal precaución al conducir durante un terremoto?",
+    options: [
+      "Mantener la velocidad alta",
+      "Detenerse en un lugar seguro y alejado de estructuras",
+      "Conducir hacia el epicentro",
+      "Usar el teléfono mientras se conduce"
+    ],
+    answerIndex: 1,
+    category: 'riesgos'
+  },
+  {
+    id: 2003,
+    text: "¿Qué riesgo representa conducir durante una inundación?",
+    options: [
+      "Solo mojarse los zapatos",
+      "Perder el control del vehículo y quedar atrapado",
+      "Gastar más combustible",
+      "Dañar la pintura del auto"
+    ],
+    answerIndex: 1,
+    category: 'riesgos'
+  }
+]
+
+// Sistema de categorías
+export const QUESTION_CATEGORIES: Record<string, QuestionCategory> = {
+  transito: {
+    name: "Tránsito",
+    description: "Preguntas sobre educación vial, semáforos, señales y reglas de tráfico",
+    questions: QUESTIONS
+  },
+  movilis: {
+    name: "Movilis",
+    description: "Preguntas sobre elementos móviles y situaciones dinámicas en la carretera",
+    questions: MOVILIS_QUESTIONS
+  },
+  riesgos: {
+    name: "Riesgos Naturales",
+    description: "Preguntas sobre desastres naturales y cómo actuar al conducir",
+    questions: RIESGOS_QUESTIONS
+  }
+}
+
+// Función original mantenida para compatibilidad
 export function pickRandomQuestions(count: number) {
   const pool = [...QUESTIONS]
   const result: Question[] = []
@@ -326,6 +432,32 @@ export function pickRandomQuestions(count: number) {
     result.push(pool.splice(idx, 1)[0])
   }
   return result
+}
+
+// Nueva función para obtener preguntas por categoría
+export function pickRandomQuestionsByCategory(category: 'transito' | 'movilis' | 'riesgos', count: number): Question[] {
+  const categoryQuestions = QUESTION_CATEGORIES[category].questions
+  const pool = [...categoryQuestions]
+  const result: Question[] = []
+  while (result.length < count && pool.length) {
+    const idx = Math.floor(Math.random() * pool.length)
+    result.push(pool.splice(idx, 1)[0])
+  }
+  return result
+}
+
+// Función para obtener la categoría según el ID de imagen
+export function getCategoryByImageId(imageId: number): 'transito' | 'movilis' | 'riesgos' {
+  // Primera fila: 1, 2, 3
+  // Segunda fila: 4, 5, 6
+  
+  if (imageId === 2) { // Primera fila, segunda imagen (Señales)
+    return 'movilis'
+  } else if (imageId === 5) { // Segunda fila, segunda imagen (Carreteras)
+    return 'riesgos'
+  } else { // Todas las demás (1, 3, 4, 6)
+    return 'transito'
+  }
 }
 
 

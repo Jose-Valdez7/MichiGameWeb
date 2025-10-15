@@ -14,31 +14,23 @@ export default function Modal({ isOpen, onClose, title, children, className = ''
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Overlay */}
+          {/* Overlay épico */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-gradient-to-br from-black/80 via-purple-900/50 to-black/80 backdrop-blur-lg z-50 flex items-center justify-center p-4"
           >
-            {/* Modal */}
+            {/* Modal transparente - el contenido controla el estilo */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className={`bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto ${className}`}
+              className={`max-w-4xl w-full max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-purple-400 hover:scrollbar-thumb-purple-300 scrollbar-thumb-rounded-full ${className}`}
             >
-              {/* Header */}
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-gray-800">{title}</h2>
-              </div>
-              
-              {/* Content */}
-              <div className="p-6">
-                {children}
-              </div>
+              {children}
             </motion.div>
           </motion.div>
         </>
