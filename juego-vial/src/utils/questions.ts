@@ -126,7 +126,6 @@ export type Question = {
             "Se permite el adelantamiento solo a bicis"
         ],
         "answerIndex": 1,
-        "image": "/images/prohibido_adelantar.png",
   
     },
     {
@@ -265,38 +264,38 @@ export type Question = {
   export const MOVILIS_QUESTIONS: Question[] = [
     {
       id: 1001,
-      text: "¿Qué es un movilis en el contexto de seguridad vial?",
+      text: "¿Cuál de las siguientes acciones es una medida preventiva ante un sismo?",
       options: [
-        "Un vehículo de emergencia",
-        "Un elemento móvil que puede causar accidentes",
-        "Un tipo de señal de tráfico",
-        "Un sistema de frenos automáticos"
+        "Correr hacia las escaleras durante el temblor",
+        "Colocarse bajo una mesa resistente y proteger la cabeza",
+        "Encender velas por si se corta la luz",
+        "Salir corriendo al patio sin mirar"
       ],
       answerIndex: 1,
       category: 'movilis'
     },
     {
       id: 1002,
-      text: "¿Cuál es el principal riesgo de los movilis en la carretera?",
+      text: "¿Qué debe contener una mochila de emergencia?",
       options: [
-        "Reducen la velocidad del tráfico",
-        "Pueden aparecer inesperadamente y causar colisiones",
-        "Consumen más combustible",
-        "Generan más ruido"
+        "Juguetes y adornos",
+        "Ropa de fiesta y perfume",
+        "Linterna, botiquín, agua y documentos personales",
+        "Computadora portátil y audífonos"
       ],
-      answerIndex: 1,
+      answerIndex: 2,
       category: 'movilis'
     },
     {
       id: 1003,
-      text: "¿Cómo debe actuar un conductor al detectar un movilis?",
+      text: "¿Cuál es la causa principal de los deslizamientos de tierra en Quito?",
       options: [
-        "Acelerar para pasar rápidamente",
-        "Reducir velocidad y estar preparado para maniobrar",
-        "Mantener la velocidad constante",
-        "Cambiar de carril inmediatamente"
+        "Lluvias intensas combinadas con pendientes pronunciadas",
+        "La falta de árboles navideños",
+        "El tráfico vehicular",
+        "El ruido urbano"
       ],
-      answerIndex: 1,
+      answerIndex: 0,
       category: 'movilis'
     }
   ]
