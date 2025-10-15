@@ -6,12 +6,12 @@ import GameDetectedModal from '../components/GameDetectedModal'
 import ModalNombreJugador from '../components/ModalNombreJugador'
 
 const characters = [
-  { name: 'Aventurero', image: '/images/personaje1.png' },
-  { name: 'Exploradora', image: '/images/personaje2.png' },
-  { name: 'Robot', image: '/images/personaje3.png' },
-  { name: 'Alien', image: '/images/personaje4.png' },
-  { name: 'Perro', image: '/images/personaje5.png' },
-  { name: 'Gato', image: '/images/personaje6.png' },
+  { name: 'Gamer', image: '/images/personaje1.png' },
+  { name: 'Mage', image: '/images/personaje2.png' },
+  { name: 'MC', image: '/images/personaje3.png' },
+  { name: 'Hacker', image: '/images/personaje4.png' },
+  { name: 'Vampiro', image: '/images/personaje5.png' },
+  { name: 'Robot', image: '/images/personaje6.png' },
 ]
 
 export default function SeleccionPersonaje() {
@@ -22,6 +22,7 @@ export default function SeleccionPersonaje() {
   const [selectedCharacter, setSelectedCharacter] = useState<string>('')
   const [hoveredIndexP1, setHoveredIndexP1] = useState<number | null>(null)
   const [hoveredIndexP2, setHoveredIndexP2] = useState<number | null>(null)
+  const [showStartButton, setShowStartButton] = useState(false)
 
   const getCharacterImage = (name: string | null | undefined) => {
     if (!name) return null
@@ -93,6 +94,20 @@ export default function SeleccionPersonaje() {
 
   const canContinue = players[0].character && players[1].character
 
+  // Efecto para mostrar el botón con delay de 2 segundos
+  useEffect(() => {
+    if (canContinue) {
+      setShowStartButton(false) // Resetear primero
+      const timer = setTimeout(() => {
+        setShowStartButton(true)
+      }, 2000) // 2 segundos de delay
+      
+      return () => clearTimeout(timer)
+    } else {
+      setShowStartButton(false)
+    }
+  }, [canContinue])
+
   const handleStartNewGame = () => {
     reset()
     setCurrentPlayer(0)
@@ -157,7 +172,7 @@ export default function SeleccionPersonaje() {
             const hovered = hoveredIndexP1
             const selectedImg = getCharacterImage(players[0].character)
             const src = hovered !== null ? characters[hovered].image : selectedImg
-            const label = hovered !== null ? characters[hovered].name : (players[0].character || 'Jugador 1')
+            const label = hovered !== null ? characters[hovered].name : (players[0].customName ? `${players[0].customName}: ${players[0].character}` : players[0].character || 'Jugador 1')
             return src ? (
               <>
                 {/* Fondo con imagen a pantalla completa */}
@@ -176,7 +191,7 @@ export default function SeleccionPersonaje() {
                 <div className="absolute -left-20 top-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-400/20 blur-3xl rounded-full pointer-events-none" />
                 {/* Banner nombre */}
                 <div className="absolute top-2 left-2 px-3 py-1 rounded-lg bg-cyan-600/70 text-white font-extrabold text-sm sm:text-base tracking-wide shadow-lg">
-                  J1: {label}
+                  {players[0].customName ? label : `J1: ${label}`}
                 </div>
               </>
             ) : (
@@ -192,7 +207,7 @@ export default function SeleccionPersonaje() {
             const hovered = hoveredIndexP2
             const selectedImg = getCharacterImage(players[1].character)
             const src = hovered !== null ? characters[hovered].image : selectedImg
-            const label = hovered !== null ? characters[hovered].name : (players[1].character || 'Jugador 2')
+            const label = hovered !== null ? characters[hovered].name : (players[1].customName ? `${players[1].customName}: ${players[1].character}` : players[1].character || 'Jugador 2')
             return src ? (
               <>
                 {/* Fondo con imagen a pantalla completa */}
@@ -211,7 +226,7 @@ export default function SeleccionPersonaje() {
                 <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-64 h-64 bg-rose-400/20 blur-3xl rounded-full pointer-events-none" />
                 {/* Banner nombre */}
                 <div className="absolute top-2 right-2 px-3 py-1 rounded-lg bg-rose-600/70 text-white font-extrabold text-sm sm:text-base tracking-wide shadow-lg">
-                  J2: {label}
+                  {players[1].customName ? label : `J2: ${label}`}
                 </div>
               </>
             ) : (
@@ -287,11 +302,12 @@ export default function SeleccionPersonaje() {
         </div>
       </div>
 
-      {canContinue && (
+      {canContinue && showStartButton && (
         <motion.div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 100, damping: 15 }}
         >
           <Link to="/fight-intro">
             <motion.button
@@ -319,6 +335,7 @@ export default function SeleccionPersonaje() {
         onConfirm={handleNameConfirm}
         playerNumber={currentPlayer + 1}
         characterName={selectedCharacter}
+        characterImage={getCharacterImage(selectedCharacter) || undefined}
       />
       </div>
     </div>

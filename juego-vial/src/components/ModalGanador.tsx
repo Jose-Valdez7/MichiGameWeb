@@ -1,6 +1,21 @@
 import { motion } from 'framer-motion'
 import Modal from './ui/Modal'
 
+const characters = [
+  { name: 'Gamer', image: '/images/personaje1.png' },
+  { name: 'Mage', image: '/images/personaje2.png' },
+  { name: 'MC', image: '/images/personaje3.png' },
+  { name: 'Hacker', image: '/images/personaje4.png' },
+  { name: 'Vampiro', image: '/images/personaje5.png' },
+  { name: 'Robot', image: '/images/personaje6.png' },
+]
+
+const getCharacterImage = (name: string | null | undefined) => {
+  if (!name) return null
+  const found = characters.find(c => c.name === name)
+  return found?.image || null
+}
+
 interface ModalGanadorProps {
   isOpen: boolean
   onClose: () => void
@@ -54,14 +69,26 @@ export default function ModalGanador({ isOpen, onClose, onContinue, winner }: Mo
             🏆 <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">¡FELICIDADES!</span>
           </h2>
           
-          {/* Animación de celebración */}
+          {/* Imagen del personaje ganador */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="text-9xl"
+            className="flex justify-center"
           >
-            🏆
+            {getCharacterImage(winner.character) ? (
+              <div className="w-45 h-45 rounded-full overflow-hidden border-4 border-yellow-400 shadow-2xl">
+                <img 
+                  src={getCharacterImage(winner.character) || ''} 
+                  alt={winner.character || 'Ganador'}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : (
+              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-6xl shadow-2xl border-4 border-yellow-400">
+                🏆
+              </div>
+            )}
           </motion.div>
           
           {/* Información del ganador */}
