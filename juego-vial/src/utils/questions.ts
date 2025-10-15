@@ -24,7 +24,7 @@ export type Question = {
             "Rojo"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/semaforo-rojo.png",
+        "image": "/images/1.png",
     },
     {
         "id": 2,
@@ -36,7 +36,7 @@ export type Question = {
             "Es una zona de juegos"
         ],
         "answerIndex": 1,
-        "image": "/images/preguntas/ceda_el_paso.png",
+        "image": "/images/1.png",
   
     },
     {
@@ -49,7 +49,7 @@ export type Question = {
             "Hay que ir en bicicleta muy lento"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/prohibido_bicicletas.png",
+        "image": "/images/2.png",
   
     },
     {
@@ -62,7 +62,7 @@ export type Question = {
             "Obligatorio seguir de frente"
         ],
         "answerIndex": 3,
-        "image": "/images/preguntas/obligatorio_frente.png",
+        "image": "/images/.png",
   
     },
     {
@@ -75,7 +75,7 @@ export type Question = {
             "El límite máximo de velocidad al que se puede ir"
         ],
         "answerIndex": 3,
-        "image": "/images/preguntas/limite_velocidad.png",
+        "image": "/images/4.png",
   
     },
     {
@@ -87,7 +87,7 @@ export type Question = {
             "Obligación de girar a la derecha"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/obligacion_girar_derecha.png",
+        "image": "/images/5.png",
   
     },
     {
@@ -100,7 +100,7 @@ export type Question = {
             "Obligatorio girar"
         ],
         "answerIndex": 1,
-        "image": "/images/preguntas/direccion_prohibida.png",
+        "image": "/images/6.png",
   
     },
     {
@@ -113,7 +113,7 @@ export type Question = {
             "Límite de velocidad muy bajo"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/via_reservada_coches_motos.png",
+        "image": "/images/7.png",
   
     },
     {
@@ -126,20 +126,20 @@ export type Question = {
             "Se permite el adelantamiento solo a bicis"
         ],
         "answerIndex": 1,
-        "image": "/images/preguntas/prohibido_adelantar.png",
+        "image": "/images/prohibido_adelantar.png",
   
     },
     {
         "id": 10,
-        "text": "¿Qué indica una señal redonda de color azul con el dibujo de una cadena de coche en el centro?",
+        "text": "¿Qué indica una señal redonda de color azul con el dibujo de un cinturon de coche en el centro?",
         "options": [
             "Prohibido usar cadenas",
             "Carretera resbaladiza",
-            "Uso obligatorio de cadenas para la nieve o neumáticos especiales",
+            "Uso obligatorio de Cinturon de Seguridad",
             "Advertencia de nieve en la carretera"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/cadenas_obligatorias.png",
+        "image": "/images/9.png",
   
     },
     {
@@ -152,7 +152,7 @@ export type Question = {
             "Rectangulares y verdes"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/senal_peligro_forma.png",
+        "image": "/images/10.png",
   
     },
     {
@@ -165,7 +165,7 @@ export type Question = {
             "Obligatorio seguir recto"
         ],
         "answerIndex": 1,
-        "image": "/images/preguntas/curvas_sucesivas.png",
+        "image": "/images/11.png",
   
     },
     {
@@ -178,7 +178,7 @@ export type Question = {
             "Zona de picnic"
         ],
         "answerIndex": 1,
-        "image": "/images/preguntas/animales_sueltos.png",
+        "image": "/images/12.png",
   
     },
     {
@@ -191,7 +191,7 @@ export type Question = {
             "Peligro por desprendimiento de rocas"
         ],
         "answerIndex": 1,
-        "image": "/images/preguntas/pendiente_pronunciada.png",
+        "image": "/images/13.png",
   
     },
     {
@@ -204,7 +204,7 @@ export type Question = {
             "Prohibido adelantar"
         ],
         "answerIndex": 1,
-        "image": "/images/preguntas/curva_peligrosa.png",
+        "image": "/images/14.png",
   
     },
     {
@@ -217,7 +217,7 @@ export type Question = {
             "Que se acerca un paso de peatones (señal informativa)"
         ],
         "answerIndex": 3,
-        "image": "/images/preguntas/paso_peatones_informativa.png",
+        "image": "/images/15.png",
   
     },
     {
@@ -230,12 +230,12 @@ export type Question = {
             "Pista de patinaje"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/parking.png",
+        "image": "/images/parking.png",
   
     },
     {
         "id": 18,
-        "text": "¿Qué indica una señal cuadrada o rectangular de color azul que tiene un dibujo de una cama?",
+        "text": "¿Qué indica una señal cuadrada o rectangular de color azul que tiene un dibujo de un Hotel?",
         "options": [
             "Prohibido dormir al volante",
             "Zona de descanso obligatoria",
@@ -243,7 +243,7 @@ export type Question = {
             "Un lugar para pararse a estirar las piernas"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/hotel_alojamiento.png",
+        "image": "/images/24.png",
   
     },
     {
@@ -256,71 +256,8 @@ export type Question = {
             "Advertencia de gases inflamables"
         ],
         "answerIndex": 2,
-        "image": "/images/preguntas/gasolinera.png",
+        "image": "/images/25.png",
   
-    },
-    {
-        "id": 20,
-        "text": "¿Qué son las franjas blancas pintadas en el suelo (Paso de Cebra)?",
-        "options": [
-            "Un lugar para estacionar coches",
-            "Una zona para jugar con el balón",
-            "El lugar seguro por donde deben cruzar los peatones",
-            "Líneas que separan los carriles"
-        ],
-        "answerIndex": 2,
-        "image": "/images/preguntas/paso_cebra.png",
-  
-    },
-    {
-        "id": 21,
-        "text": "Cuando una calle tiene una línea continua y ancha pintada de blanco en el centro, ¿qué significa para el conductor?",
-        "options": [
-            "Que puede adelantar a otros coches",
-            "Que está prohibido cruzar la línea para adelantar o cambiar de carril",
-            "Que puede dar la vuelta",
-            "Que debe ir más rápido"
-        ],
-        "answerIndex": 1,
-        "image": "/images/preguntas/linea_continua.png",
-  
-    },
-    {
-        "id": 22,
-        "text": "¿Qué indica una flecha grande pintada en el carril de la calle?",
-        "options": [
-            "Que la carretera está en mal estado",
-            "Que el coche puede ir a cualquier lado",
-            "La dirección o el movimiento que es obligatorio seguir en ese carril",
-            "La ubicación de una tienda"
-        ],
-        "answerIndex": 2,
-        "image": "/images/preguntas/flecha_carril.png",
-    },
-    {
-        "id": 23,
-        "text": "¿Para qué se utiliza una línea discontinua (rayas cortadas) de color blanco pintada en el centro de la calzada?",
-        "options": [
-            "Para prohibir totalmente el cambio de carril",
-            "Para permitir adelantar o cambiar de carril con precaución",
-            "Para marcar el límite de la acera",
-            "Para indicar el \"Paso de Cebra\""
-        ],
-        "answerIndex": 1,
-        "image": "/images/preguntas/linea_discontinua.png",
-  
-    },
-    {
-        "id": 24,
-        "text": "¿Qué significa la marca vial que consiste en líneas diagonales (como un enrejado) pintadas dentro de una intersección o cruce?",
-        "options": [
-            "Que es una zona de estacionamiento",
-            "Que no debes detener tu vehículo en esa zona para no bloquear el cruce",
-            "Es una zona de juegos",
-            "Es una vía de acceso restringido"
-        ],
-        "answerIndex": 1,
-        "image": "/images/preguntas/marca_enrejado.png",
     }
   ]
   
