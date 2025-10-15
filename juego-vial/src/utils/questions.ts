@@ -28,7 +28,7 @@ export type Question = {
     },
     {
         "id": 2,
-        "text": "¿Qué significa la señal con un triángulo invertido (cabeza abajo) y borde rojo, conocida como \"Ceda el Paso\"?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Tengo derecho a pasar primero",
             "Debo reducir la velocidad y parar si vienen otros vehículos o peatones",
@@ -41,7 +41,7 @@ export type Question = {
     },
     {
         "id": 3,
-        "text": "¿Qué significa una señal redonda con borde rojo y una bicicleta tachada con una línea diagonal?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Hay un carril bici",
             "Se puede montar en bicicleta muy rápido",
@@ -54,7 +54,7 @@ export type Question = {
     },
     {
         "id": 4,
-        "text": "¿Qué indica una señal redonda de color azul con una flecha blanca que apunta hacia adelante?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido pasar",
             "Zona de aparcamiento",
@@ -67,7 +67,7 @@ export type Question = {
     },
     {
         "id": 5,
-        "text": "¿Qué significa una señal redonda con borde rojo y un número (por ejemplo, un \"30\")?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "La distancia que falta para un pueblo",
             "La velocidad mínima permitida en la vía",
@@ -80,7 +80,7 @@ export type Question = {
     },
     {
         "id": 6,
-        "text": "¿Cuál es el significado de una señal redonda, azul con una flecha curva blanca que gira hacia la derecha?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido girar a la derecha",
             "Advertencia de curva peligrosa",
@@ -92,7 +92,7 @@ export type Question = {
     },
     {
         "id": 7,
-        "text": "¿Cuál es el significado de una señal redonda con borde rojo y una flecha gorda negra apuntando hacia arriba tachada por una barra roja diagonal?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido estacionar",
             "Prohibido el paso en esa dirección",
@@ -105,7 +105,7 @@ export type Question = {
     },
     {
         "id": 8,
-        "text": "¿Qué indica una señal redonda de color azul con un dibujo de un coche y una moto?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibida la entrada de vehículos",
             "Obligación de usar el cinturón",
@@ -118,7 +118,7 @@ export type Question = {
     },
     {
         "id": 9,
-        "text": "¿Qué representa una señal redonda con borde rojo y una flecha negra de doble sentido tachada con una barra diagonal?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido adelantar camiones",
             "Prohibido adelantar a otros vehículos",
@@ -130,7 +130,7 @@ export type Question = {
     },
     {
         "id": 10,
-        "text": "¿Qué indica una señal redonda de color azul con el dibujo de un cinturon de coche en el centro?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido usar cadenas",
             "Carretera resbaladiza",
@@ -143,7 +143,7 @@ export type Question = {
     },
     {
         "id": 11,
-        "text": "¿Cuál es el color principal y la forma de las señales que nos advierten de un peligro inminente (señales preventivas)?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Redondas y rojas",
             "Cuadradas y azules",
@@ -156,7 +156,7 @@ export type Question = {
     },
     {
         "id": 12,
-        "text": "¿Qué significa la señal que es un triángulo con borde rojo y tiene un dibujo de una curva en forma de \"S\"?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Hay un lugar para sentarse",
             "Advertencia de curvas peligrosas sucesivas",
@@ -169,7 +169,7 @@ export type Question = {
     },
     {
         "id": 13,
-        "text": "¿Qué significa una señal triangular con borde rojo y el dibujo de un ciervo o alce?",
+          "text": "¿Qué significa esta señal?",
         "options": [
             "Hay un zoológico cerca",
             "Advertencia de animales salvajes sueltos en la vía",
@@ -182,7 +182,7 @@ export type Question = {
     },
     {
         "id": 14,
-        "text": "¿Qué significa la señal que es un triángulo con borde rojo y el dibujo de un camión bajando una pendiente muy inclinada?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido el paso de camiones",
             "Advertencia de una pendiente o cuesta muy pronunciada",
@@ -195,7 +195,7 @@ export type Question = {
     },
     {
         "id": 15,
-        "text": "¿Cuál es el significado de una señal triangular con borde rojo que muestra una flecha ondulada o curva?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido hacer giros en \"U\"",
             "Advertencia de curva peligrosa",
@@ -208,7 +208,7 @@ export type Question = {
     },
     {
         "id": 16,
-        "text": "¿Qué indica una señal cuadrada o rectangular de color azul con el dibujo de una persona caminando en un paso de cebra?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Que es obligatorio correr",
             "Que el paso de peatones está prohibido",
@@ -221,7 +221,7 @@ export type Question = {
     },
     {
         "id": 17,
-        "text": "¿Qué indica una señal cuadrada o rectangular de color azul con una letra P mayúscula?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido pasar",
             "Carretera peligrosa",
@@ -234,7 +234,7 @@ export type Question = {
     },
     {
         "id": 18,
-        "text": "¿Qué indica una señal cuadrada o rectangular de color azul que tiene un dibujo de un Hotel?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Prohibido dormir al volante",
             "Zona de descanso obligatoria",
@@ -247,7 +247,7 @@ export type Question = {
     },
     {
         "id": 19,
-        "text": "¿Qué representa una señal cuadrada o rectangular de color azul con el dibujo de un surtidor de gasolina?",
+        "text": "¿Qué significa esta señal?",
         "options": [
             "Obligación de llevar el depósito lleno",
             "Prohibido vender gasolina",

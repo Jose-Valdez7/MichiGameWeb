@@ -19,7 +19,7 @@ export default function FightIntro() {
       'Michi Mago': '/images/personaje2.png',
       'Michi Rapero': '/images/personaje3.png',
       'Michi Hacker': '/images/personaje4.png',
-      'MIchi Vampiro': '/images/personaje5.png',
+      'Michi Vampiro': '/images/personaje5.png',
       'Michi Cyborg': '/images/personaje6.png',
     }
     return map[characterName] || null

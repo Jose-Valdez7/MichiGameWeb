@@ -2,8 +2,10 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useGame } from '../context/GameContext'
 import { useState, useEffect, useRef } from 'react'
+import { useSound } from '../hooks/useSound'
 import GameDetectedModal from '../components/GameDetectedModal'
 import ModalNombreJugador from '../components/ModalNombreJugador'
+
 
 const characters = [
   { name: 'Michi Gamer', image: '/images/personaje1.png' },
@@ -18,6 +20,19 @@ export default function SeleccionPersonaje() {
   const { players, selectCharacter, setCustomName, reset, justReset } = useGame()
   const [currentPlayer, setCurrentPlayer] = useState<0 | 1>(0)
   const [showGameDetectedModal, setShowGameDetectedModal] = useState(false)
+  const [audioEnabled, setAudioEnabled] = useState(false)
+
+  const { playSound, stopAllSounds } = useSound()
+
+  // Solo música de fondo
+  const backgroundMusic = '/sounds/Undertale OST_ 015 - sans..mp3'
+
+  // Función para activar el audio
+  const enableAudio = () => {
+    setAudioEnabled(true)
+    // Reproducir música de fondo
+    playSound(backgroundMusic, { volume: 0.3, loop: true })
+  }
   const [showNameModal, setShowNameModal] = useState(false)
   const [selectedCharacter, setSelectedCharacter] = useState<string>('')
   const [hoveredIndexP1, setHoveredIndexP1] = useState<number | null>(null)
@@ -108,6 +123,20 @@ export default function SeleccionPersonaje() {
     }
   }, [canContinue])
 
+  // Reproducir música de fondo cuando se activa el audio
+  useEffect(() => {
+    if (audioEnabled) {
+      playSound(backgroundMusic, { volume: 0.3, loop: true })
+    }
+  }, [audioEnabled, playSound])
+
+  // Limpiar sonidos al desmontar el componente
+  useEffect(() => {
+    return () => {
+      stopAllSounds()
+    }
+  }, [stopAllSounds])
+
   const handleStartNewGame = () => {
     reset()
     setCurrentPlayer(0)
@@ -122,6 +151,31 @@ export default function SeleccionPersonaje() {
 
   return (
     <div className="min-h-dvh p-6 flex flex-col items-center gap-6 relative overflow-hidden">
+      {/* Botón para activar audio */}
+      {!audioEnabled && (
+        <motion.button
+          onClick={enableAudio}
+          className="fixed top-4 right-4 z-50 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-black px-6 py-3 rounded-full shadow-2xl border-2 border-yellow-300 hover:from-yellow-400 hover:to-orange-400 transition-all duration-300"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          🔊 Activar Sonidos
+        </motion.button>
+      )}
+
+      {/* Indicador de audio activado */}
+      {audioEnabled && (
+        <motion.div
+          className="fixed top-4 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-black px-4 py-2 rounded-full shadow-2xl border-2 border-green-300"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+        >
+          🔊 Sonidos Activados
+        </motion.div>
+      )}
+
       {/* Fondo épico con gradiente dramático */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900" />
       
