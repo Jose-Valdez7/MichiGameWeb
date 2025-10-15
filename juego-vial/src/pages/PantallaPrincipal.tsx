@@ -4,15 +4,20 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ModalPregunta from '../components/ModalPregunta'
 import ModalGanador from '../components/ModalGanador'
+import senalPare from '../assets/Imagenes michivial/señaletica de pare - Edited (1).png'
+import gatoauto from '../assets/Imagenes michivial/Michimovil vista frontal.png'
+import movilis from '../assets/Imagenes michivial/michimobilis.png'
+import cliclistas from '../assets/Imagenes michivial/gatobicileta.png'
+import riesgos from '../assets/Imagenes michivial/Gato_en construccion 1.png'
+import peatones from '../assets/Imagenes michivial/gatocruzando.png'
 
-// 6 imágenes diferentes para las preguntas
 const imagenes = [
-  { id: 1, icon: '🚦', name: 'Semáforos' },
-  { id: 2, icon: '🚸', name: 'Señales' },
-  { id: 3, icon: '🚗', name: 'Vehículos' },
-  { id: 4, icon: '🚶', name: 'Peatones' },
-  { id: 5, icon: '🛣️', name: 'Carreteras' },
-  { id: 6, icon: '🅿️', name: 'Estacionamiento' },
+  { id: 1, icon: '🚦', name: 'Señales', imageSrc: senalPare },
+  { id: 2, icon: '🚸', name: 'Movilis', imageSrc: movilis },
+  { id: 3, icon: '🚗', name: 'Vehículos', imageSrc: gatoauto },
+  { id: 4, icon: '🚶', name: 'Peatones', imageSrc: peatones },
+  { id: 5, icon: '🛣️', name: 'Riesgos', imageSrc: riesgos },
+  { id: 6, icon: '🅿️', name: 'cliclistas', imageSrc: cliclistas },
 ]
 
 export default function PantallaPrincipal() {
@@ -67,10 +72,14 @@ export default function PantallaPrincipal() {
     
     setSelectedImageId(imageId)
     setShowQuestionModal(true)
+    // Ocultar banner mientras el modal de preguntas está abierto
+    window.dispatchEvent(new CustomEvent('toggle-banner', { detail: { hidden: true } }))
   }
 
   const handleQuestionAnswered = (isCorrect: boolean) => {
     setShowQuestionModal(false)
+    // Mostrar banner al cerrar el modal
+    window.dispatchEvent(new CustomEvent('toggle-banner', { detail: { hidden: false } }))
     
     if (isCorrect && selectedImageId) {
       // Bloquear la imagen y dar punto
@@ -135,7 +144,7 @@ export default function PantallaPrincipal() {
       </div>
 
       {/* Contenido principal */}
-      <div className="relative z-10 flex flex-col items-center gap-6 w-full">
+      <div className="relative z-0 flex flex-col items-center gap-6 w-full">
         <motion.h1 
           className="text-4xl md:text-5xl font-black text-white drop-shadow-2xl text-center"
           initial={{ y: -50, opacity: 0 }}
@@ -265,14 +274,20 @@ export default function PantallaPrincipal() {
               )}
               
               <motion.div 
-                className="text-6xl relative z-10"
+                className="relative z-10 flex items-center justify-center"
                 animate={!isBlocked && isCurrentPlayerTurn ? { 
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 5, -5, 0]
+                  scale: [1, 1.05, 1],
+                  rotate: [0, 3, -3, 0]
                 } : {}}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                {isBlocked ? '🔒' : imagen.icon}
+                {isBlocked ? (
+                  <span className="text-6xl">🔒</span>
+                ) : imagen.imageSrc ? (
+                  <img src={imagen.imageSrc} alt={imagen.name} className="w-40 h-40 object-contain" />
+                ) : (
+                  <span className="text-6xl">{imagen.icon}</span>
+                )}
               </motion.div>
               
               <h3 className="text-xl font-black text-white drop-shadow relative z-10">
@@ -352,7 +367,10 @@ export default function PantallaPrincipal() {
       {/* Modales */}
       <ModalPregunta
         isOpen={showQuestionModal}
-        onClose={() => setShowQuestionModal(false)}
+        onClose={() => {
+          setShowQuestionModal(false)
+          window.dispatchEvent(new CustomEvent('toggle-banner', { detail: { hidden: false } }))
+        }}
         onAnswer={handleQuestionAnswered}
         imageId={selectedImageId}
         currentPlayer={currentPlayer}
