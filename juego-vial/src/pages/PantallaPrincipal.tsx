@@ -33,16 +33,27 @@ export default function PantallaPrincipal() {
   const [isInitialized, setIsInitialized] = useState(false)
   const [questionSelectedAnswer, setQuestionSelectedAnswer] = useState<number | null>(null)
   const [questionIsCorrect, setQuestionIsCorrect] = useState<boolean | null>(null)
-  const [audioEnabled, setAudioEnabled] = useState(false)
+  const [audioEnabled, setAudioEnabled] = useState(true)
 
+  const { playSound, stopAllSounds } = useSound();
+  const backgroundMusic = '/sounds/Treasure Trove Cove - Banjo-Kazooie (GilvaSunner Reupload).mp3';
 
-  const { playSound, stopAllSounds } = useSound()
-  const currentPlayer = players[currentTurn]
+  // Reproducir música de fondo automáticamente al montar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      playSound(backgroundMusic, { volume: 0.3, loop: true });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [playSound]);
+
+  // Limpiar sonidos al desmontar
+  useEffect(() => {
+    return () => {
+      stopAllSounds();
+    };
+  }, [stopAllSounds])
 
   // Solo música de fondo
-  const backgroundMusic = '/sounds/Treasure Trove Cove - Banjo-Kazooie (GilvaSunner Reupload).mp3'
-
-  // Función para activar el audio
   const enableAudio = () => {
     setAudioEnabled(true)
     // Reproducir música de fondo
@@ -55,6 +66,13 @@ export default function PantallaPrincipal() {
     // Detener todos los sonidos
     stopAllSounds()
   }
+
+  // Reproducir música de fondo cuando se activa el audio
+  useEffect(() => {
+    if (audioEnabled) {
+      playSound(backgroundMusic, { volume: 0.3, loop: true })
+    }
+  }, [audioEnabled, playSound])
 
   // Inicializar el juego cuando se llega por primera vez desde FightIntro
   useEffect(() => {
@@ -79,13 +97,6 @@ export default function PantallaPrincipal() {
     }
     // Removido el else que reseteaba isInitialized
   }, [players, isInitialized, currentTurn])
-
-  // Limpiar sonidos al desmontar el componente
-  useEffect(() => {
-    return () => {
-      stopAllSounds()
-    }
-  }, [stopAllSounds])
 
   // Verificar si hay un ganador
   useEffect(() => {
@@ -168,6 +179,8 @@ export default function PantallaPrincipal() {
     }
     return map[characterName] || null
   }
+
+  const currentPlayer = players[currentTurn];
 
   return (
     <>

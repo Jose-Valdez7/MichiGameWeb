@@ -15,17 +15,17 @@ export type Question = {
   
   // Preguntas de educación vial
   export const QUESTIONS: Question[] = [
-    {
-        "id": 1,
-        "text": "¿Qué color indica ALTO en un semáforo?",
-        "options": [
-            "Verde",
-            "Amarillo",
-            "Rojo"
-        ],
-        "answerIndex": 2,
-        "image": "/images/1.png",
-    },
+  {
+    "id": 1,
+    "text": "¿Qué indica este color en un semáforo?",
+    "options": [
+      "Siga",
+      "Atención",
+      "Alto"
+    ],
+    "answerIndex": 2,
+    "image": "/images/semaforo-rojo.png",
+  },
     {
         "id": 2,
         "text": "¿Qué significa esta señal?",
@@ -113,7 +113,7 @@ export type Question = {
             "Se permite el adelantamiento solo a bicis"
         ],
         "answerIndex": 1,
-  
+        "image": "/images/8.png",
     },
     {
         "id": 10,
@@ -132,10 +132,10 @@ export type Question = {
         "id": 11,
         "text": "¿Qué significa esta señal?",
         "options": [
-            "Redondas y rojas",
+            "Siga normalmente",
             "Cuadradas y azules",
-            "Triangulares o romboidales y amarillas",
-            "Rectangulares y verdes"
+            "Atención: Peligro",
+            "Falta de mantenimiento "
         ],
         "answerIndex": 2,
         "image": "/images/10.png",
@@ -216,7 +216,7 @@ export type Question = {
             "Pista de patinaje"
         ],
         "answerIndex": 2,
-        "image": "/images/parking.png",
+        "image": "/images/25.png",
   
     },
     {
@@ -237,12 +237,12 @@ export type Question = {
         "text": "¿Qué significa esta señal?",
         "options": [
             "Obligación de llevar el depósito lleno",
-            "Prohibido vender gasolina",
             "Información de que hay una gasolinera o estación de servicio cerca",
+            "Prohibido vender gasolina",
             "Advertencia de gases inflamables"
         ],
-        "answerIndex": 2,
-        "image": "/images/25.png",
+        "answerIndex": 1,
+        "image": "/images/23.png",
   
     }
   ]

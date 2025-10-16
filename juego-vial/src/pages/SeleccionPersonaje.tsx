@@ -20,12 +20,25 @@ export default function SeleccionPersonaje() {
   const { players, selectCharacter, setCustomName, reset, justReset } = useGame()
   const [currentPlayer, setCurrentPlayer] = useState<0 | 1>(0)
   const [showGameDetectedModal, setShowGameDetectedModal] = useState(false)
-  const [audioEnabled, setAudioEnabled] = useState(false)
+  const [audioEnabled, setAudioEnabled] = useState(true)
 
-  const { playSound, stopAllSounds } = useSound()
+  const { playSound, stopAllSounds } = useSound();
+  const backgroundMusic = '/sounds/Kirby\'s Dreamland 3 - Sand Canyon 1.mp3';
 
-  // Solo música de fondo
-  const backgroundMusic = '/sounds/Kirby\'s Dreamland 3 - Sand Canyon 1.mp3'
+  // Reproducir música de fondo automáticamente al montar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      playSound(backgroundMusic, { volume: 0.3, loop: true });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [playSound]);
+
+  // Limpiar sonidos al desmontar
+  useEffect(() => {
+    return () => {
+      stopAllSounds();
+    };
+  }, [stopAllSounds])
 
   // Función para activar el audio
   const enableAudio = () => {
