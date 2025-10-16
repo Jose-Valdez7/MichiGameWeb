@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGame } from '../context/GameContext'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSound } from '../hooks/useSound'
 import ModalInicioJuego from '../components/ModalInicioJuego'
 
 export default function FightIntro() {
@@ -11,11 +12,42 @@ export default function FightIntro() {
   const [key, setKey] = useState(0) // Para forzar re-render completo
   const [showStartModal, setShowStartModal] = useState(false)
 
+  const { playSound, stopAllSounds } = useSound()
+  const battleMusic = '/sounds/Godzilla vs Biollante Soundtrack- Bio Wars.mp3'
+
+  // Obtener imagen del personaje seleccionado desde public/images
+  const getCharacterImage = (characterName: string | null) => {
+    if (!characterName) return null
+    const map: Record<string, string> = {
+      'Michi Gamer': '/images/personaje1.png',
+      'Michi Mago': '/images/personaje2.png',
+      'Michi Rapero': '/images/personaje3.png',
+      'Michi Hacker': '/images/personaje4.png',
+      'Michi Vampiro': '/images/personaje5.png',
+      'Michi Cyborg': '/images/personaje6.png',
+    }
+    return map[characterName] || null
+  }
+
   // Resetear animación cada vez que se monta el componente
   useEffect(() => {
     setAnimationPhase('entering')
     setKey(prev => prev + 1) // Forzar re-render completo
-  }, [])
+    
+    // Reproducir música de batalla automáticamente
+    const timer = setTimeout(() => {
+      playSound(battleMusic, { volume: 0.3, loop: true })
+    }, 500) // Delay un poco más para que se cargue la página
+    
+    return () => clearTimeout(timer)
+  }, [playSound])
+
+  // Limpiar sonidos al desmontar
+  useEffect(() => {
+    return () => {
+      stopAllSounds()
+    }
+  }, [stopAllSounds])
 
   // Animación automática por fases - TIMING MEJORADO
   useEffect(() => {
@@ -36,6 +68,8 @@ export default function FightIntro() {
   const player2 = players[1]
 
   const handleStartPlayerSelection = (playerIndex: 0 | 1) => {
+    // Pausar música cuando se selecciona el jugador
+    stopAllSounds()
     setStartingPlayer(playerIndex)
     setShowStartModal(false)
     // Pequeño delay para que se vea la transición
@@ -46,6 +80,7 @@ export default function FightIntro() {
 
   return (
     <div key={key} className="fixed inset-0 bg-black overflow-hidden">
+
       {/* Fondo con gradiente dramático */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-900 via-purple-900 to-black" />
       
@@ -89,16 +124,21 @@ export default function FightIntro() {
         }}
       >
         <div className="text-center">
-          {/* Avatar del personaje */}
+          {/* Panel mitad izquierda con imagen a pantalla parcial */}
           <motion.div
-            className="w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-6xl mb-4 shadow-2xl"
-            animate={{ 
-              scale: animationPhase === 'vs' ? 1.1 : 1,
-              rotate: animationPhase === 'vs' ? 3 : 0
+            className="w-[42vw] max-w-[520px] h-[60vh] md:h-[65vh] rounded-2xl overflow-hidden "
+            style={{
+              backgroundImage: getCharacterImage(player1.character) ? `url(${getCharacterImage(player1.character)})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center left'
             }}
-            transition={{ duration: 0.5 }}
+            animate={{ 
+              scale: animationPhase === 'vs' ? 1.03 : 1,
+              rotate: animationPhase === 'vs' ? 1.5 : 0
+            }}
+            transition={{ duration: 0.6 }}
           >
-            🚗
+            {/* <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" /> */}
           </motion.div>
           
           {/* Nombre del personaje */}
@@ -142,16 +182,21 @@ export default function FightIntro() {
         }}
       >
         <div className="text-center">
-          {/* Avatar del personaje */}
+          {/* Panel mitad derecha con imagen a pantalla parcial */}
           <motion.div
-            className="w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-6xl mb-4 shadow-2xl"
-            animate={{ 
-              scale: animationPhase === 'vs' ? 1.1 : 1,
-              rotate: animationPhase === 'vs' ? -3 : 0
+            className="w-[42vw] max-w-[520px] h-[60vh] md:h-[65vh] rounded-2xl overflow-hidden "
+            style={{
+              backgroundImage: getCharacterImage(player2.character) ? `url(${getCharacterImage(player2.character)})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center right'
             }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            animate={{ 
+              scale: animationPhase === 'vs' ? 1.03 : 1,
+              rotate: animationPhase === 'vs' ? -1.5 : 0
+            }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
-            🚙
+            <div className="absolute inset-0 bg-gradient-to-l from-black/40 via-transparent to-transparent" />
           </motion.div>
           
           {/* Nombre del personaje */}
@@ -367,7 +412,7 @@ export default function FightIntro() {
 
       {/* Título principal */}
       <motion.h1
-        className="absolute top-16 left-1/2 transform -translate-x-1/2 text-white font-black text-4xl md:text-6xl text-center"
+        className="absolute top-5 bottom-10 left-1/2 transform -translate-x-1/2 text-white font-black text-4xl md:text-6xl text-center"
         initial={{ y: -100, opacity: 0 }}
         animate={{ 
           y: 0, 
@@ -375,12 +420,12 @@ export default function FightIntro() {
         }}
         transition={{ type: "spring", stiffness: 100, damping: 15 }}
       >
-        ENFRENTAMIENTO FINAL
+        ENFRENTAMIENTO
       </motion.h1>
 
       {/* Mensaje de preparación */}
       <motion.div
-        className="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-center"
+        className="absolute bottom-16 top-20 left-1/2 transform -translate-x-1/2 text-center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ 
           opacity: animationPhase === 'names' ? 1 : 0,

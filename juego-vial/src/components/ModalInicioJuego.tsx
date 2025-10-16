@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import Modal from './ui/Modal'
+import { useSound } from '../hooks/useSound'
 
 interface ModalInicioJuegoProps {
   isOpen: boolean
@@ -14,8 +15,22 @@ interface ModalInicioJuegoProps {
 }
 
 export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalInicioJuegoProps) {
+  const { stopAllSounds } = useSound()
   const player1 = players[0]
   const player2 = players[1]
+
+  const getCharacterImage = (characterName: string | null) => {
+    if (!characterName) return null
+    const map: Record<string, string> = {
+      'Michi Gamer': '/images/personaje1.png',
+      'Michi Mago': '/images/personaje2.png',
+      'Michi Rapero': '/images/personaje3.png',
+      'Michi Hacker': '/images/personaje4.png',
+      'Michi Vampiro': '/images/personaje5.png',
+      'Michi Cyborg': '/images/personaje6.png',
+    }
+    return map[characterName] || null
+  }
 
   return (
     <Modal isOpen={isOpen}>
@@ -24,23 +39,23 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
         animate={{ scale: 1, opacity: 1, rotateY: 0 }}
         exit={{ scale: 0, opacity: 0, rotateY: 180 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 max-w-3xl w-full mx-4 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-yellow-400 hover:scrollbar-thumb-yellow-300 scrollbar-thumb-rounded-full"
+        className="bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 md:p-10 max-w-none w-full mx-0 text-center shadow-2xl relative overflow-hidden max-h-[92vh] min-h-[70vh] md:min-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-yellow-400 hover:scrollbar-thumb-yellow-300 scrollbar-thumb-rounded-full"
       >
         {/* Efectos de fondo épicos */}
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-orange-500/10" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500" />
-        
+
         {/* Partículas flotantes */}
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-yellow-400 rounded-full opacity-60"
-            initial={{ 
+            initial={{
               x: Math.random() * 300,
               y: Math.random() * 200,
               opacity: 0
             }}
-            animate={{ 
+            animate={{
               opacity: [0, 0.8, 0],
               scale: [0, 1, 0],
               y: [Math.random() * 200, Math.random() * 200]
@@ -59,7 +74,7 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
           transition={{ delay: 0.2 }}
           className="relative z-10"
         >
-          <motion.h2 
+          <motion.h2
             className="text-4xl font-black text-white mb-6 drop-shadow-2xl"
             animate={{ textShadow: ["0 0 20px yellow", "0 0 30px orange", "0 0 20px yellow"] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -74,92 +89,92 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
           {/* Jugador 1 */}
           <motion.button
-            onClick={() => onSelect(0)}
-            whileHover={{ scale: 1.1, y: -10, rotateY: 10 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative p-8 bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-lg border-2 border-blue-400/50 rounded-2xl hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 group"
+            onClick={() => {
+              stopAllSounds()
+              onSelect(0)
+            }}
+            whileHover={{ scale: 1.03, y: -6 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative h-96 md:h-[26rem] lg:h-[30rem] overflow-hidden rounded-2xl border-2 border-blue-400/60 hover:border-blue-300 shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 group"
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.4, type: "spring", stiffness: 100 }}
           >
-            {/* Efecto de resplandor */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-blue-600/10 rounded-2xl"
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 2, repeat: Infinity }}
+            {/* Fondo con blur */}
+            <div
+              className="absolute inset-0 bg-center bg-cover filter blur-sm md:blur-[0.9px] "
+              style={{
+                backgroundImage: getCharacterImage(player1.character) ? `url(${getCharacterImage(player1.character)})` : undefined,
+              }}
             />
-            
+            {/* Overlays para legibilidad */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <motion.div
-              className="w-24 h-24 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-5xl mb-6 mx-auto shadow-2xl relative z-10"
-              whileHover={{ rotate: 10, scale: 1.1 }}
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              🚗
-            </motion.div>
-            <h3 className="text-2xl font-black text-white mb-3 relative z-10 drop-shadow">
-              {player1.character}
-            </h3>
-            <p className="text-blue-300 font-medium mb-4 relative z-10">
-              {player1.customName || 'Jugador 1'}
-            </p>
-            <motion.div
-              className="inline-flex items-center gap-3 text-blue-400 font-bold text-lg relative z-10"
-              whileHover={{ x: 10, scale: 1.1 }}
-            >
-              <span>⚡ INICIAR PRIMERO</span>
-              <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1, repeat: Infinity }}
+              className="absolute inset-0"
+              animate={{ opacity: [0.15, 0.35, 0.15] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+              style={{ backgroundImage: 'radial-gradient(circle at 20% 10%, rgba(59,130,246,0.25), transparent 40%)' }}
+            />
+            {/* Texto sobre la imagen */}
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <p className="text-2xl font-black text-white drop-shadow">
+                {player1.customName || 'Jugador 1'}
+              </p>
+              <h3 className="text-blue-200 font-semibold">
+                {player1.character}
+              </h3>
+              <motion.div
+                className="mt-3 inline-flex items-center gap-2 text-white/90 font-bold"
+                whileHover={{ x: 6 }}
               >
-                →
-              </motion.span>
-            </motion.div>
+                <span className="px-3 py-1 rounded-full bg-blue-600/70 border border-white/20">⚡ Iniciar primero</span>
+              </motion.div>
+            </div>
           </motion.button>
 
           {/* Jugador 2 */}
           <motion.button
-            onClick={() => onSelect(1)}
-            whileHover={{ scale: 1.1, y: -10, rotateY: -10 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative p-8 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 backdrop-blur-lg border-2 border-orange-400/50 rounded-2xl hover:border-orange-300 hover:shadow-2xl hover:shadow-orange-500/25 transition-all duration-300 group"
+            onClick={() => {
+              stopAllSounds()
+              onSelect(1)
+            }}
+            whileHover={{ scale: 1.03, y: -6 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative h-96 md:h-[26rem] lg:h-[30rem] overflow-hidden rounded-2xl border-2 border-orange-400/60 hover:border-orange-300 shadow-2xl hover:shadow-orange-500/30 transition-all duration-300 group"
             initial={{ x: 100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
           >
-            {/* Efecto de resplandor */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-orange-400/10 to-yellow-500/10 rounded-2xl"
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+            {/* Fondo con blur */}
+            <div
+              className="absolute inset-0 bg-center bg-cover filter blur-sm md:blur-[0.9px]"
+              style={{
+                backgroundImage: getCharacterImage(player2.character) ? `url(${getCharacterImage(player2.character)})` : undefined,
+              }}
             />
-            
+            {/* Overlays para legibilidad */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <motion.div
-              className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-5xl mb-6 mx-auto shadow-2xl relative z-10"
-              whileHover={{ rotate: -10, scale: 1.1 }}
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            >
-              🚙
-            </motion.div>
-            <h3 className="text-2xl font-black text-white mb-3 relative z-10 drop-shadow">
-              {player2.character}
-            </h3>
-            <p className="text-orange-300 font-medium mb-4 relative z-10">
-              {player2.customName || 'Jugador 2'}
-            </p>
-            <motion.div
-              className="inline-flex items-center gap-3 text-orange-400 font-bold text-lg relative z-10"
-              whileHover={{ x: 10, scale: 1.1 }}
-            >
-              <span>⚡ INICIAR PRIMERO</span>
-              <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1, repeat: Infinity, delay: 0.3 }}
+              className="absolute inset-0"
+              animate={{ opacity: [0.15, 0.35, 0.15] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+              style={{ backgroundImage: 'radial-gradient(circle at 80% 10%, rgba(249,115,22,0.25), transparent 40%)' }}
+            />
+            {/* Texto sobre la imagen */}
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <p className="text-2xl font-black text-white drop-shadow">
+                {player2.customName || 'Jugador 2'}
+              </p>
+              <h3 className="text-orange-200 font-semibold">
+                {player2.character}
+              </h3>
+              <motion.div
+                className="mt-3 inline-flex items-center gap-2 text-white/90 font-bold"
+                whileHover={{ x: 6 }}
               >
-                →
-              </motion.span>
-            </motion.div>
+                <span className="px-3 py-1 rounded-full bg-orange-600/70 border border-white/20">⚡ Iniciar primero</span>
+              </motion.div>
+            </div>
           </motion.button>
         </div>
 
@@ -169,22 +184,22 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
           transition={{ delay: 0.8 }}
           className="flex items-center justify-center gap-3 text-gray-300 relative z-10"
         >
-          <motion.div 
+          <motion.div
             className="w-3 h-3 bg-yellow-400 rounded-full"
             animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />
-          <motion.div 
+          <motion.div
             className="w-3 h-3 bg-orange-400 rounded-full"
             animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
           />
-          <motion.div 
+          <motion.div
             className="w-3 h-3 bg-red-400 rounded-full"
             animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
           />
-          <motion.span 
+          <motion.span
             className="ml-4 text-lg font-medium"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}

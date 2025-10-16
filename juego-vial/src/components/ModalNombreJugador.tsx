@@ -7,6 +7,7 @@ type ModalNombreJugadorProps = {
   onConfirm: (nombre: string) => void
   playerNumber: number
   characterName: string
+  characterImage?: string
 }
 
 export default function ModalNombreJugador({ 
@@ -14,7 +15,8 @@ export default function ModalNombreJugador({
   onClose, 
   onConfirm, 
   playerNumber, 
-  characterName 
+  characterName,
+  characterImage 
 }: ModalNombreJugadorProps) {
   const [nombre, setNombre] = useState('')
 
@@ -51,6 +53,17 @@ export default function ModalNombreJugador({
             }}
           />
         ))}
+        
+        {/* Imagen del personaje en la esquina superior derecha */}
+        {characterImage && (
+          <div className="absolute top-4 right-4 w-40 h-40 rounded-full overflow-hidden border-2 border-white/30 shadow-2xl z-20">
+            <img 
+              src={characterImage} 
+              alt={characterName}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
         
         <div className="space-y-6 relative z-10">
           <div className="text-center">
