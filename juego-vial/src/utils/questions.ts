@@ -258,7 +258,8 @@ export type Question = {
         "ONG",
       ],
       answerIndex: 0,
-      category: 'movilis'
+      category: 'movilis',
+      image: '/images/michimobilis.png'
     },
     {
       id: 1002,
@@ -270,7 +271,8 @@ export type Question = {
         "Zapatería Nuclear"
       ],
       answerIndex: 3,
-      category: 'movilis'
+      category: 'movilis',
+      image: '/images/michimobilis.png'
     },
     {
       id: 1003,
@@ -282,7 +284,8 @@ export type Question = {
         "Solo si nos caes bien"
       ],
       answerIndex: 0,
-      category: 'movilis'
+      category: 'movilis',
+      image: '/images/michimobilis.png'
     }
   ]
   
