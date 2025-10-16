@@ -283,7 +283,7 @@ export type Question = {
         "No",
         "Solo si nos caes bien"
       ],
-      answerIndex: 0,
+      answerIndex: 1,
       category: 'movilis',
       image: '/images/michimobilis.png'
     }
