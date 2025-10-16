@@ -29,13 +29,24 @@ export default function ModalGanador({ isOpen, onClose, onContinue, winner }: Mo
       isOpen={isOpen}
       onClose={onClose}
       title=""
-      className="max-w-lg"
-      adjustForNavbar={true}
+      className="max-w-6xl w-full mt-20"
+      adjustForNavbar={false}
     >
-      <div className="bg-gradient-to-br from-gray-900 via-yellow-900 to-orange-900 backdrop-blur-xl border-2 border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-yellow-400 hover:scrollbar-thumb-yellow-300 scrollbar-thumb-rounded-full">
+      <div 
+        className="backdrop-blur-xl border-2 border-yellow-400/50 rounded-3xl p-10 text-center shadow-2xl relative overflow-hidden scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-yellow-400 hover:scrollbar-thumb-yellow-300 scrollbar-thumb-rounded-full flex flex-col justify-center min-h-[80vh]"
+        style={{
+          backgroundImage: getCharacterImage(winner.character) ? `url(${getCharacterImage(winner.character)})` : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Overlay para legibilidad del texto */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-purple-900/60 to-black/70" />
+        
         {/* Efectos de fondo épicos */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-orange-500/10" />
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-500/20" />
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500" />
         
         {/* Partículas de celebración */}
         {[...Array(12)].map((_, i) => (
@@ -63,32 +74,21 @@ export default function ModalGanador({ isOpen, onClose, onContinue, winner }: Mo
           />
         ))}
         
-        <div className="text-center space-y-6 relative z-10">
-          <h2 className="text-4xl font-black text-white mb-6 drop-shadow-2xl">
-            🏆 <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">¡FELICIDADES!</span>
-          </h2>
+        <div className="text-center space-y-8 relative z-10 w-full max-w-6xl mx-auto">
+           {/* Título épico de victoria */}
+           <motion.div
+             initial={{ scale: 0, rotate: -180 }}
+             animate={{ scale: 1, rotate: 0 }}
+             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+             className="mb-6"
+           >
+             <h2 className="text-6xl font-black text-white mb-4 drop-shadow-2xl">
+               <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                 ⚔️ VICTORIA ÉPICA ⚔️
+               </span>
+             </h2>
+           </motion.div>
           
-          {/* Imagen del personaje ganador */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="flex justify-center"
-          >
-            {getCharacterImage(winner.character) ? (
-              <div className="w-45 h-45 rounded-full overflow-hidden border-4 border-yellow-400 shadow-2xl">
-                <img 
-                  src={getCharacterImage(winner.character) || ''} 
-                  alt={winner.character || 'Ganador'}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ) : (
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-6xl shadow-2xl border-4 border-yellow-400">
-                🏆
-              </div>
-            )}
-          </motion.div>
           
           {/* Información del ganador */}
           <motion.div
@@ -97,49 +97,33 @@ export default function ModalGanador({ isOpen, onClose, onContinue, winner }: Mo
             transition={{ delay: 0.4 }}
             className="space-y-4"
           >
-            {/* Corona sobre el nombre */}
-            <div className="relative">
-              <motion.div
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ delay: 0.6, type: 'spring', stiffness: 200 }}
-                className="text-5xl mb-3"
-              >
-                👑
-              </motion.div>
-              <h3 className="text-4xl font-black text-white mb-2 drop-shadow">
-                ¡<span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">{winner.customName || winner.name}</span> HA GANADO!
-              </h3>
-            </div>
+             {/* Nombre del ganador */}
+             <div className="relative">
+               <h3 className="text-7xl font-black text-white mb-6 drop-shadow-2xl">
+                 ¡<span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent animate-pulse">
+                   {winner.customName || winner.name}
+                 </span> HA GANADO!
+               </h3>
+             </div>
             
-            <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-lg border border-yellow-400/50 rounded-2xl p-4">
-              <p className="text-xl text-white font-bold">
-                Primer jugador en llegar a 3 puntos
-              </p>
-            </div>
-            
-            <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-lg border border-yellow-400/50 rounded-2xl p-4">
-              <p className="text-2xl font-black text-white mb-2">
-                Puntos finales: <span className="text-yellow-400">{winner.points}/3</span>
-              </p>
-              <p className="text-lg text-gray-300 font-medium">
-                Personaje: <span className="text-yellow-400 font-bold">{winner.character}</span>
-              </p>
-            </div>
           </motion.div>
 
-          {/* Botón de acción */}
+          {/* Botón de acción épico */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.8 }}
           >
-            <button
+            <motion.button
               onClick={onContinue}
-              className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-500 hover:to-indigo-500 transition-all duration-300 font-black text-2xl shadow-lg hover:shadow-blue-500/50 flex items-center justify-center gap-3"
+              className="w-full px-8 py-6 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white rounded-2xl hover:from-yellow-400 hover:via-orange-400 hover:to-red-400 transition-all duration-300 font-black text-3xl shadow-2xl hover:shadow-yellow-500/50 flex items-center justify-center gap-4 border-2 border-yellow-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              🎮 Continuar
-            </button>
+              <span className="text-4xl">🎮</span>
+              <span>¡JUGAR DE NUEVO!</span>
+              <span className="text-4xl">⚔️</span>
+            </motion.button>
           </motion.div>
 
           {/* Efectos de confeti épicos */}

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import Modal from './ui/Modal'
+import { useSound } from '../hooks/useSound'
 
 interface ModalInicioJuegoProps {
   isOpen: boolean
@@ -14,6 +15,7 @@ interface ModalInicioJuegoProps {
 }
 
 export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalInicioJuegoProps) {
+  const { stopAllSounds } = useSound()
   const player1 = players[0]
   const player2 = players[1]
 
@@ -24,7 +26,7 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
       'Michi Mago': '/images/personaje2.png',
       'Michi Rapero': '/images/personaje3.png',
       'Michi Hacker': '/images/personaje4.png',
-      'MIchi Vampiro': '/images/personaje5.png',
+      'Michi Vampiro': '/images/personaje5.png',
       'Michi Cyborg': '/images/personaje6.png',
     }
     return map[characterName] || null
@@ -87,7 +89,10 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-10">
           {/* Jugador 1 */}
           <motion.button
-            onClick={() => onSelect(0)}
+            onClick={() => {
+              stopAllSounds()
+              onSelect(0)
+            }}
             whileHover={{ scale: 1.03, y: -6 }}
             whileTap={{ scale: 0.98 }}
             className="relative h-96 md:h-[26rem] lg:h-[30rem] overflow-hidden rounded-2xl border-2 border-blue-400/60 hover:border-blue-300 shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 group"
@@ -129,7 +134,10 @@ export default function ModalInicioJuego({ isOpen, onSelect, players }: ModalIni
 
           {/* Jugador 2 */}
           <motion.button
-            onClick={() => onSelect(1)}
+            onClick={() => {
+              stopAllSounds()
+              onSelect(1)
+            }}
             whileHover={{ scale: 1.03, y: -6 }}
             whileTap={{ scale: 0.98 }}
             className="relative h-96 md:h-[26rem] lg:h-[30rem] overflow-hidden rounded-2xl border-2 border-orange-400/60 hover:border-orange-300 shadow-2xl hover:shadow-orange-500/30 transition-all duration-300 group"

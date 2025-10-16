@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGame } from '../context/GameContext'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSound } from '../hooks/useSound'
 import ModalInicioJuego from '../components/ModalInicioJuego'
 
 export default function FightIntro() {
@@ -11,6 +12,9 @@ export default function FightIntro() {
   const [key, setKey] = useState(0) // Para forzar re-render completo
   const [showStartModal, setShowStartModal] = useState(false)
 
+  const { playSound, stopAllSounds } = useSound()
+  const battleMusic = '/sounds/Godzilla vs Biollante Soundtrack- Bio Wars.mp3'
+
   // Obtener imagen del personaje seleccionado desde public/images
   const getCharacterImage = (characterName: string | null) => {
     if (!characterName) return null
@@ -19,7 +23,7 @@ export default function FightIntro() {
       'Michi Mago': '/images/personaje2.png',
       'Michi Rapero': '/images/personaje3.png',
       'Michi Hacker': '/images/personaje4.png',
-      'MIchi Vampiro': '/images/personaje5.png',
+      'Michi Vampiro': '/images/personaje5.png',
       'Michi Cyborg': '/images/personaje6.png',
     }
     return map[characterName] || null
@@ -29,7 +33,21 @@ export default function FightIntro() {
   useEffect(() => {
     setAnimationPhase('entering')
     setKey(prev => prev + 1) // Forzar re-render completo
-  }, [])
+    
+    // Reproducir música de batalla automáticamente
+    const timer = setTimeout(() => {
+      playSound(battleMusic, { volume: 0.3, loop: true })
+    }, 500) // Delay un poco más para que se cargue la página
+    
+    return () => clearTimeout(timer)
+  }, [playSound])
+
+  // Limpiar sonidos al desmontar
+  useEffect(() => {
+    return () => {
+      stopAllSounds()
+    }
+  }, [stopAllSounds])
 
   // Animación automática por fases - TIMING MEJORADO
   useEffect(() => {
@@ -50,6 +68,8 @@ export default function FightIntro() {
   const player2 = players[1]
 
   const handleStartPlayerSelection = (playerIndex: 0 | 1) => {
+    // Pausar música cuando se selecciona el jugador
+    stopAllSounds()
     setStartingPlayer(playerIndex)
     setShowStartModal(false)
     // Pequeño delay para que se vea la transición
@@ -60,6 +80,7 @@ export default function FightIntro() {
 
   return (
     <div key={key} className="fixed inset-0 bg-black overflow-hidden">
+
       {/* Fondo con gradiente dramático */}
       <div className="absolute inset-0 bg-gradient-to-br from-red-900 via-purple-900 to-black" />
       

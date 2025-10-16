@@ -33,6 +33,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [showContinue, setShowContinue] = useState(false)
 
+
   // Obtener imagen del personaje del jugador en turno
   const getCharacterImage = (characterName: string | null) => {
     if (!characterName) return null
@@ -41,7 +42,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
       'Michi Mago': '/images/personaje2.png',
       'Michi Rapero': '/images/personaje3.png',
       'Michi Hacker': '/images/personaje4.png',
-      'MIchi Vampiro': '/images/personaje5.png',
+      'Michi Vampiro': '/images/personaje5.png',
       'Michi Cyborg': '/images/personaje6.png',
     }
     return map[characterName] || null
@@ -159,13 +160,13 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
             <p className="text-lg text-gray-300 mb-4 font-medium">
               Categoría: <span className="text-yellow-400 font-bold">{imageId ? categoryNames[getCategoryByImageId(imageId)] : 'General'}</span>
             </p>
-            <p className="text-xl text-gray-200 leading-relaxed">{question.text}</p>
+            <p className="text-2xl md:text-3xl text-white font-black leading-relaxed drop-shadow-2xl">{question.text}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-            {/* Izquierda: imagen */}
+            {/* Izquierda: imagen o texto grande */}
             <div className="flex justify-center md:justify-start">
-              {question.image && (
+              {question.image ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -178,6 +179,17 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
                     className="w-full h-auto max-h-[28rem] rounded-xl shadow-xl border border-white/20 object-contain"
                     onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
                   />
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full max-w-2xl flex items-center justify-center h-[28rem]"
+                >
+                  <p className="text-3xl md:text-4xl text-white font-black leading-relaxed text-center drop-shadow-2xl">
+                    {question.text}
+                  </p>
                 </motion.div>
               )}
             </div>
