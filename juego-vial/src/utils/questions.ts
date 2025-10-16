@@ -251,36 +251,35 @@ export type Question = {
   export const MOVILIS_QUESTIONS: Question[] = [
     {
       id: 1001,
-      text: "¿Cuál de las siguientes acciones es una medida preventiva ante un sismo?",
+      text: "¿Que es MOVILIS?",
       options: [
-        "Correr hacia las escaleras durante el temblor",
-        "Colocarse bajo una mesa resistente y proteger la cabeza",
-        "Encender velas por si se corta la luz",
-        "Salir corriendo al patio sin mirar"
+        "Instituto Superior",
+        "Cooperativa de transporte",
+        "ONG",
       ],
-      answerIndex: 1,
+      answerIndex: 0,
       category: 'movilis'
     },
     {
       id: 1002,
-      text: "¿Qué debe contener una mochila de emergencia?",
+      text: "¿Cuál de estas carreras NO tiene MOVILIS?",
       options: [
-        "Juguetes y adornos",
-        "Ropa de fiesta y perfume",
-        "Linterna, botiquín, agua y documentos personales",
-        "Computadora portátil y audífonos"
+        "Administración de empresas de transporte",
+        "Marketing Digital y Comunicación estratégica",
+        "Desarrollo de Software y Programación",
+        "Zapatería Nuclear"
       ],
-      answerIndex: 2,
+      answerIndex: 3,
       category: 'movilis'
     },
     {
       id: 1003,
-      text: "¿Cuál es la causa principal de los deslizamientos de tierra en Quito?",
+      text: "¿Puedes estudiar inglés en Movilis?",
       options: [
-        "Lluvias intensas combinadas con pendientes pronunciadas",
-        "La falta de árboles navideños",
-        "El tráfico vehicular",
-        "El ruido urbano"
+        "Depende",
+        "Si",
+        "No",
+        "Solo si nos caes bien"
       ],
       answerIndex: 0,
       category: 'movilis'
@@ -291,38 +290,38 @@ export type Question = {
   export const RIESGOS_QUESTIONS: Question[] = [
     {
       id: 2001,
-      text: "¿Qué debe hacer un conductor si está cerca de un volcán en erupción?",
+      text: "¿Cuál de las siguientes acciones es una medida preventiva ante un sismo?",
       options: [
-        "Continuar conduciendo normalmente",
-        "Evacuar el área inmediatamente y buscar refugio",
-        "Estacionarse y observar el fenómeno",
-        "Acelerar para alejarse rápidamente"
+        "Correr hacia las escaleras durante el temblor",
+        "Colocarse bajo una mesa resistente y proteger la cabeza",
+        "Encender velas por si se corta la luz",
+        "Salir corriendo al patio sin mirar"
       ],
       answerIndex: 1,
       category: 'riesgos'
     },
     {
       id: 2002,
-      text: "¿Cuál es la principal precaución al conducir durante un terremoto?",
+      text: "¿Qué debe contener una mochila de emergencia?",
       options: [
-        "Mantener la velocidad alta",
-        "Detenerse en un lugar seguro y alejado de estructuras",
-        "Conducir hacia el epicentro",
-        "Usar el teléfono mientras se conduce"
+        "Juguetes y adornos",
+        "Ropa de fiesta y perfume",
+        "Linterna, botiquín, agua y documentos personales",
+        "Computadora portátil y audífonos"
       ],
-      answerIndex: 1,
+      answerIndex: 2,
       category: 'riesgos'
     },
     {
       id: 2003,
-      text: "¿Qué riesgo representa conducir durante una inundación?",
+      text: "¿Cuál es la causa principal de los deslizamientos de tierra en Quito?",
       options: [
-        "Solo mojarse los zapatos",
-        "Perder el control del vehículo y quedar atrapado",
-        "Gastar más combustible",
-        "Dañar la pintura del auto"
+        "Lluvias intensas combinadas con pendientes pronunciadas",
+        "La falta de árboles navideños",
+        "El tráfico vehicular",
+        "El ruido urbano"
       ],
-      answerIndex: 1,
+      answerIndex: 0,
       category: 'riesgos'
     }
   ]
