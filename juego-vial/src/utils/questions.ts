@@ -53,19 +53,6 @@ export type Question = {
   
     },
     {
-        "id": 4,
-        "text": "¿Qué significa esta señal?",
-        "options": [
-            "Prohibido pasar",
-            "Zona de aparcamiento",
-            "Hay que girar a la derecha",
-            "Obligatorio seguir de frente"
-        ],
-        "answerIndex": 3,
-        "image": "/images/.png",
-  
-    },
-    {
         "id": 5,
         "text": "¿Qué significa esta señal?",
         "options": [

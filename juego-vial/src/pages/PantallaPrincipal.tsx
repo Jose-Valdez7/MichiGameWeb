@@ -35,17 +35,25 @@ export default function PantallaPrincipal() {
   const [questionIsCorrect, setQuestionIsCorrect] = useState<boolean | null>(null)
   const [audioEnabled, setAudioEnabled] = useState(false)
 
+
   const { playSound, stopAllSounds } = useSound()
   const currentPlayer = players[currentTurn]
 
   // Solo música de fondo
-  const backgroundMusic = '/sounds/Undertale OST_ 015 - sans..mp3'
+  const backgroundMusic = '/sounds/Treasure Trove Cove - Banjo-Kazooie (GilvaSunner Reupload).mp3'
 
   // Función para activar el audio
   const enableAudio = () => {
     setAudioEnabled(true)
     // Reproducir música de fondo
     playSound(backgroundMusic, { volume: 0.3, loop: true })
+  }
+
+  // Función para desactivar el audio
+  const disableAudio = () => {
+    setAudioEnabled(false)
+    // Detener todos los sonidos
+    stopAllSounds()
   }
 
   // Inicializar el juego cuando se llega por primera vez desde FightIntro
@@ -68,12 +76,8 @@ export default function PantallaPrincipal() {
           playSound(backgroundMusic, { volume: 0.3, loop: true })
         }
       }
-    } else {
-      // Si no están listos los personajes, marcar como no inicializado
-      if (isInitialized) {
-    setIsInitialized(false)
-      }
     }
+    // Removido el else que reseteaba isInitialized
   }, [players, isInitialized, currentTurn])
 
   // Limpiar sonidos al desmontar el componente
@@ -98,11 +102,11 @@ export default function PantallaPrincipal() {
       return
     }
     
-    
     setSelectedImageId(imageId)
     setQuestionSelectedAnswer(null)
     setQuestionIsCorrect(null)
     setShowQuestionModal(true)
+    
     // Ocultar banner mientras el modal de preguntas está abierto
     window.dispatchEvent(new CustomEvent('toggle-banner', { detail: { hidden: true } }))
   }
@@ -235,11 +239,11 @@ export default function PantallaPrincipal() {
       )}
 
     <div className="min-h-dvh p-6 flex flex-col items-center gap-6 relative overflow-hidden">
-      {/* Botón para activar audio */}
+      {/* Botón para activar audio - Posición discreta */}
       {!audioEnabled && (
         <motion.button
           onClick={enableAudio}
-          className="fixed top-4 right-4 z-50 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-black px-6 py-3 rounded-full shadow-2xl border-2 border-yellow-300 hover:from-yellow-400 hover:to-orange-400 transition-all duration-300"
+          className="fixed bottom-6 right-6 z-40 bg-black/20 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-lg border border-white/30 hover:bg-black/40 transition-all duration-300"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           whileHover={{ scale: 1.05 }}
@@ -249,15 +253,18 @@ export default function PantallaPrincipal() {
         </motion.button>
       )}
 
-      {/* Indicador de audio activado */}
+      {/* Botón para desactivar audio - Posición discreta */}
       {audioEnabled && (
-        <motion.div
-          className="fixed top-4 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-black px-4 py-2 rounded-full shadow-2xl border-2 border-green-300"
+        <motion.button
+          onClick={disableAudio}
+          className="fixed bottom-6 right-6 z-40 bg-black/20 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-lg border border-white/30 hover:bg-black/40 transition-all duration-300"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          🔊 Sonidos Activados
-        </motion.div>
+          🔇 Desactivar Sonidos
+        </motion.button>
       )}
 
       {/* Fondo épico con gradiente dramático */}
@@ -466,6 +473,7 @@ export default function PantallaPrincipal() {
           const isBlocked = imagenesBloqueadas.has(imagen.id)
           const isCurrentPlayerTurn = !gameFinished && isInitialized
           
+          
           // Colores de batalla según categoría
           const battleColors = {
             transito: { 
@@ -508,16 +516,9 @@ export default function PantallaPrincipal() {
               transition={{ delay: 0.1 * index, type: "spring", stiffness: 80 }}
             >
               {/* Carta de Batalla Épica */}
-            <motion.button
-                whileHover={!isBlocked && isCurrentPlayerTurn ? { 
-                  scale: 1.08, 
-                  y: -12,
-                  rotateY: 8,
-                  rotateX: -5
-                } : {}}
-                whileTap={!isBlocked && isCurrentPlayerTurn ? { scale: 0.95 } : {}}
+            <button
               onClick={() => handleImageClick(imagen.id)}
-                disabled={isBlocked || !isCurrentPlayerTurn}
+              disabled={isBlocked || !isCurrentPlayerTurn}
               className={`
                   relative w-full h-64 rounded-3xl border-2 transition-all duration-500 overflow-hidden
                 ${isBlocked 
@@ -618,7 +619,7 @@ export default function PantallaPrincipal() {
                 
                 {/* Efecto de Aura de Batalla */}
                 <div className={`absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-yellow-400/50 group-hover:shadow-yellow-400/20 transition-all duration-500`}></div>
-            </motion.button>
+            </button>
               
               {/* Sombra de Batalla */}
               <div className="absolute inset-0 bg-gradient-to-br from-black/30 to-transparent rounded-3xl group-hover:from-black/20 transition-all duration-500"></div>
@@ -665,6 +666,7 @@ export default function PantallaPrincipal() {
 
 
       {/* Modales */}
+
       <ModalPregunta
         isOpen={showQuestionModal}
         onClose={() => {
@@ -681,7 +683,7 @@ export default function PantallaPrincipal() {
         isOpen={showWinnerModal}
         onClose={handleWinnerModalClose}
         winner={players.find(player => player.points >= 3)}
-        onContinue={handleWinnerModalClose}
+        onContinue={resetGame}
       />
     </div>
     </div>

@@ -33,6 +33,7 @@ export default function ModalPregunta({ isOpen, onClose, onAnswer, imageId, curr
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [showContinue, setShowContinue] = useState(false)
 
+
   // Obtener imagen del personaje del jugador en turno
   const getCharacterImage = (characterName: string | null) => {
     if (!characterName) return null

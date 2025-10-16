@@ -25,7 +25,7 @@ export default function SeleccionPersonaje() {
   const { playSound, stopAllSounds } = useSound()
 
   // Solo música de fondo
-  const backgroundMusic = '/sounds/Undertale OST_ 015 - sans..mp3'
+  const backgroundMusic = '/sounds/Kirby\'s Dreamland 3 - Sand Canyon 1.mp3'
 
   // Función para activar el audio
   const enableAudio = () => {
@@ -33,6 +33,23 @@ export default function SeleccionPersonaje() {
     // Reproducir música de fondo
     playSound(backgroundMusic, { volume: 0.3, loop: true })
   }
+
+  // Función para desactivar el audio
+  const disableAudio = () => {
+    setAudioEnabled(false)
+    // Detener todos los sonidos
+    stopAllSounds()
+  }
+
+  // Función para iniciar enfrentamiento con música
+  const handleStartBattle = () => {
+    // Activar contexto de audio antes de navegar
+    if (!audioEnabled) {
+      setAudioEnabled(true)
+      playSound(backgroundMusic, { volume: 0.1 }) // Sonido muy bajo para activar contexto
+    }
+  }
+
   const [showNameModal, setShowNameModal] = useState(false)
   const [selectedCharacter, setSelectedCharacter] = useState<string>('')
   const [hoveredIndexP1, setHoveredIndexP1] = useState<number | null>(null)
@@ -151,11 +168,11 @@ export default function SeleccionPersonaje() {
 
   return (
     <div className="min-h-dvh p-6 flex flex-col items-center gap-6 relative overflow-hidden">
-      {/* Botón para activar audio */}
+      {/* Botón para activar audio - Posición discreta */}
       {!audioEnabled && (
         <motion.button
           onClick={enableAudio}
-          className="fixed top-4 right-4 z-50 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-black px-6 py-3 rounded-full shadow-2xl border-2 border-yellow-300 hover:from-yellow-400 hover:to-orange-400 transition-all duration-300"
+          className="fixed bottom-6 right-6 z-40 bg-black/20 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-lg border border-white/30 hover:bg-black/40 transition-all duration-300"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           whileHover={{ scale: 1.05 }}
@@ -165,15 +182,18 @@ export default function SeleccionPersonaje() {
         </motion.button>
       )}
 
-      {/* Indicador de audio activado */}
+      {/* Botón para desactivar audio - Posición discreta */}
       {audioEnabled && (
-        <motion.div
-          className="fixed top-4 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-black px-4 py-2 rounded-full shadow-2xl border-2 border-green-300"
+        <motion.button
+          onClick={disableAudio}
+          className="fixed bottom-6 right-6 z-40 bg-black/20 backdrop-blur-sm text-white text-sm px-4 py-2 rounded-lg border border-white/30 hover:bg-black/40 transition-all duration-300"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          🔊 Sonidos Activados
-        </motion.div>
+          🔇 Desactivar Sonidos
+        </motion.button>
       )}
 
       {/* Fondo épico con gradiente dramático */}
@@ -286,10 +306,10 @@ export default function SeleccionPersonaje() {
             ) : (
               <div className="w-full h-full grid place-items-center text-white/70 text-sm sm:text-base">
                 J2: Aun no selcciona personaje
-              </div>
+          </div>
             )
           })()}
-        </div>
+          </div>
         {/* VS centrado entre previews */}
         <motion.div 
           className="hidden md:flex items-center justify-center absolute inset-0 pointer-events-none"
@@ -299,7 +319,7 @@ export default function SeleccionPersonaje() {
         >
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-red-600 to-yellow-400 border-4 border-white/30 shadow-2xl grid place-items-center">
             <span className="text-white font-black text-3xl drop-shadow">VS</span>
-          </div>
+        </div>
         </motion.div>
       </div>
 
@@ -365,13 +385,14 @@ export default function SeleccionPersonaje() {
         >
           <Link to="/fight-intro">
             <motion.button
+              onClick={handleStartBattle}
               className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white font-black text-3xl md:text-4xl px-12 md:px-16 py-6 md:py-8 rounded-2xl shadow-2xl border-2 border-white/30 transition-all duration-300 hover:scale-105 hover:shadow-red-500/50"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
             >
               ⚔️ ¡INICIAR ENFRENTAMIENTO! ⚔️
             </motion.button>
-          </Link>
+        </Link>
         </motion.div>
       )}
 
